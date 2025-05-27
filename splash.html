@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quill - Create. Organize. Work.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/indexcss.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="logo">
+                <img src="images/logopms.png" alt="Logo" style="height: 90px;">
+            </a>    
+            
+            
+            <button class="theme-toggle" id="themeToggle"></button>
+            
+            <button class="login-btn" id="loginBtn"></button>
+        </header>
+        
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">CREATE. ORGANIZE. WORK.</h1>
+                <p class="hero-description">
+                    Streamline your workflow with Quill's intuitive tools. Designed for professionals who need to capture ideas, organize projects, and collaborate seamlessly across teams.
+                </p>
+                <button class="start-btn" id="startBtn">
+                    Let's Start
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="hero-image">
+                <div class="hero-image-placeholder" id="heroImage"></div>
+            </div>
+        </section>
+    </div>
+    
+    <section class="features">
+        <div class="container">
+            <h2 class="features-title">Why Choose Quill</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-feature="create">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                            <path d="M2 2l7.586 7.586"></path>
+                            <circle cx="11" cy="11" r="2"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Create Effortlessly</h3>
+                    <p class="feature-description">Powerful tools that make content creation simple and enjoyable. From notes to documents, Quill handles it all.</p>
+                </div>
+                
+                <div class="feature-card" data-feature="organize">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Organize Intelligently</h3>
+                    <p class="feature-description">Keep everything in its place with smart folders, tags, and AI-powered organization that adapts to your workflow.</p>
+                </div>
+                
+                <div class="feature-card" data-feature="collaborate">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Collaborate Seamlessly</h3>
+                    <p class="feature-description">Work together in real-time with your team. Share, comment, and edit documents with intuitive collaboration tools.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Login Modal -->
+    <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: white; padding: 30px; border-radius: 8px; width: 400px; max-width: 90%; position: relative;">
+            <button id="closeModal" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+            <h2 style="margin-bottom: 20px;">Log In to Quill</h2>
+            <form id="loginForm">
+                <div style="margin-bottom: 15px;">
+                    <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
+                    <input type="email" id="email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label for="password" style="display: block; margin-bottom: 5px;">Password</label>
+                    <input type="password" id="password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <button type="submit" style="width: 100%; padding: 12px; background-color: #000; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Log In</button>
+                <p style="margin-top: 15px; text-align: center;">
+                    <a href="#" style="color: #000; text-decoration: none;">Forgot password?</a> <!-- Changed from red to black -->
+                </p>
+            </form>
+        </div>
+    </div>
+
+        <script src="js/indexjs.js"></script>
+        <!-- Firebase App (core) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+</body>
+</html>

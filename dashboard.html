@@ -1,0 +1,3212 @@
+               
+<html lang="en">
+    <head>
+        <!-- Keep the existing head content -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>QUILL - Dashboard</title>
+        <!-- Keep all the existing styles -->
+        <style>
+            /* All existing styles remain the same */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
+    
+            body {
+                display: flex;
+                min-height: 100vh;
+                background-color: #f5f5f5;
+            }
+    
+            /* Sidebar Styles */
+            .sidebar {  
+                width: 250px;
+                background-color: #fff;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                padding: 20px 0;
+                position: fixed;
+                height: 100vh;
+                left: 0;
+                top: 0;
+            }
+    
+            .logo {
+                padding: 0 20px;
+                margin-bottom: 30px;
+                display: flex;
+                align-items: center;
+                font-weight: bold;
+                font-size: 20px;
+            }
+    
+            .logo img {
+                height: 24px;
+                margin-right: 5px;
+            }
+    
+            .nav-menu {
+                list-style: none;
+            }
+    
+            .nav-item {
+                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                color: #333;
+                text-decoration: none;
+            }
+    
+            .nav-item:hover {
+                background-color: #f5f5f5;
+            }
+    
+            .nav-item.active {
+                background-color: #f0f0f0;
+                border-left: 4px solid #000;
+            }
+    
+            .nav-item i {
+                margin-right: 10px;
+                width: 20px;
+                text-align: center;
+            }
+    
+            /* Main Content Styles */
+            .main-content {
+                margin-left: 250px;
+                padding: 20px;
+                width: calc(100% - 250px);
+            }
+    
+            .header {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+    
+            .welcome-text {
+                font-size: 24px;
+                font-weight: 500;
+                color: #333;
+            }
+    
+            .content-area {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+    
+            .sidebar-user {
+                position: absolute;
+                bottom: 30px;
+                left: 0;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0 0 0;
+                border-top: 1px solid #eee;
+                background: #fff;
+            }
+            .sidebar-user-avatar {
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background-color: #e0e0e0;
+                background-size: cover;
+                background-position: center;
+                margin-bottom: 10px;
+            }
+            .sidebar-user-name {
+                font-size: 14px;
+                font-weight: 500;
+                color: #333;
+                margin-bottom: 4px;
+                text-align: center;
+                max-width: 100%;
+                padding: 0 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .sidebar-user-email {
+                font-size: 12px;
+                color: #666;
+                text-align: center;
+                word-break: break-all;
+                max-width: 100%;
+                padding: 0 10px;
+                margin-bottom: 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .logout-btn {
+                margin-top: 12px;
+                width: 80%;
+                padding: 10px;
+                background: #fff;
+                color: #d32f2f;
+                border: 1px solid #d32f2f;
+                border-radius: 6px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background 0.2s, color 0.2s;
+            }
+            .logout-btn:hover {
+                background: #d32f2f;
+                color: #fff;
+            }
+    
+            .sidebar-user-email {
+              font-size: 12px;
+              color: #666;
+              text-align: center;
+              word-break: break-all;
+              max-width: 100%;
+              padding: 0 10px;
+              margin-bottom: 10px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+    
+            .sidebar-user-name {
+              font-size: 14px;
+              font-weight: 500;
+              color: #333;
+              margin-bottom: 4px;
+              text-align: center;
+              max-width: 100%;
+              padding: 0 10px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+    
+            .loading-spinner {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                border: 2px solid rgba(0, 0, 0, 0.1);
+                border-radius: 50%;
+                border-top-color: #000;
+                animation: spin 1s ease-in-out infinite;
+                margin-left: 10px;
+                vertical-align: middle;
+            }
+    
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+    
+            .dark-mode .loading-spinner {
+                border-color: rgba(255, 255, 255, 0.1);
+                border-top-color: #fff;
+            }
+    
+            .completed-task {
+                opacity: 0.8;
+                background: #f0f8f0 !important;
+                border-left: 4px solid #388e3c !important;
+    }
+        </style>
+        <!-- Add this to ensure the email is visible -->
+        <style>
+            /* Add this to ensure the email is visible */
+            #sidebarUserEmail {
+                display: block !important;
+                font-size: 12px !important;
+                color: #666 !important;
+                text-align: center !important;
+                padding: 0 10px !important;
+                margin-bottom: 10px !important;
+                max-width: 100% !important;
+                word-break: break-all !important;
+            }
+        </style>
+        <!-- Font Awesome for icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!-- Chart.js for analytics -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Firebase SDK scripts -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+        <script>
+            const firebaseConfig = {
+      apiKey: "AIzaSyCsk99-24TWqPARmr6UWBBKh_3AE8ibJVo",
+      authDomain: "project-management-acde3.firebaseapp.com",
+      databaseURL: "https://project-management-acde3-default-rtdb.firebaseio.com",
+      projectId: "project-management-acde3",
+      storageBucket: "project-management-acde3.firebasestorage.app",
+      messagingSenderId: "223881271649",
+      appId: "1:223881271649:web:de625e09b8f39388df4d20",
+      measurementId: "G-924JZR3M0H",
+    }
+            firebase.initializeApp(firebaseConfig);
+        </script>
+    </head>
+    <body>
+        <!-- Keep all the existing HTML structure -->
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="images/logopms.png" alt="QUILL Logo">
+                <span>QUILL</span>
+            </div>
+            <ul class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item" id="projectsNav">
+                    <i class="fas fa-project-diagram"></i>
+                    Projects
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+                <a href="#" class="nav-item" id="archiveNav">
+                    <i class="fas fa-archive"></i>
+                    Archive
+                </a>
+            </ul>
+            <div class="sidebar-user" id="sidebarUser">
+                <div class="sidebar-user-avatar" id="sidebarUserAvatar"></div>
+                <div class="sidebar-user-name" id="sidebarUserName"></div>
+                <div class="sidebar-user-email" id="sidebarUserEmail"></div>
+                <button class="logout-btn" id="logoutBtn" onclick="logoutUser()">Log out</button>
+            </div>
+        </div>
+    
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="welcome-text">Welcome back!</div>
+            </div>
+            <div class="content-area">
+                <!-- Dashboard Overview Content -->
+                <div id="dashboard-content">
+                    <h2>Dashboard</h2>
+                    <!-- Tabs -->
+                    <div style="margin-bottom: 24px;">
+                        <button id="overviewTab" class="dashboard-tab-btn" style="padding:8px 24px; border-radius:6px 6px 0 0; border:1px solid #bbb; border-bottom:none; background:#000; color:#fff; font-weight:500;">OVERVIEW</button>
+                        <button id="analyticsTab" class="dashboard-tab-btn" style="padding:8px 24px; border-radius:6px 6px 0 0; border:1px solid #bbb; border-bottom:none; background:#fff; color:#000; font-weight:500;">ANALYTICS</button>
+                    </div>
+                    <!-- Overview Section -->
+                    <div id="overview-section">
+                        <!-- Dashboard Summary -->
+                        <div id="dashboard-summary" style="display: flex; gap: 24px; margin-bottom: 32px;">
+                            <div style="flex:1; background:#fff; border:1px solid #bbb; border-radius:12px; padding:24px; text-align:center;">
+                                <div style="font-size:20px; font-weight:600; margin-bottom:8px;">Projects</div>
+                                <div id="summary-total" style="font-size:36px; font-weight:700;">0</div>
+                            </div>
+                            <div style="flex:1; background:#fff; border:1px solid #bbb; border-radius:12px; padding:24px; text-align:center;">
+                                <div style="font-size:20px; font-weight:600; margin-bottom:8px;">In Progress</div>
+                                <div id="summary-inprogress" style="font-size:36px; font-weight:700;">0</div>
+                            </div>
+                            <div style="flex:1; background:#fff; border:1px solid #bbb; border-radius:12px; padding:24px; text-align:center;">
+                                <div style="font-size:20px; font-weight:600; margin-bottom:8px;">Completed</div>
+                                <div id="summary-completed" style="font-size:36px; font-weight:700;">0</div>
+                            </div>
+                        </div>
+                        <!-- Dashboard Activities -->
+                        <div style="display: flex; gap: 24px;">
+                            <div style="flex:1; background:#fff; border:1px solid #bbb; border-radius:12px;">
+                                <div style="background:#000; color:#fff; padding:12px 18px; border-radius:12px 12px 0 0; font-size:18px; font-weight:500;">Recent Activities</div>
+                                <div id="dashboard-activities" style="padding:18px; min-height:120px; font-size:16px;"></div>
+                            </div>
+                            <div style="flex:1; background:#fff; border:1px solid #bbb; border-radius:12px;">
+                                <div style="background:#000; color:#fff; padding:12px 18px; border-radius:12px 12px 0 0; font-size:18px; font-weight:500;">Project Progress</div>
+                                <div id="dashboard-progress" style="padding:18px; min-height:120px; font-size:16px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Analytics Section -->
+                    <div id="analytics-section" style="display:none;">
+                        <div style="background:#fff; border:1px solid #bbb; border-radius:12px; padding:32px; min-height:300px; display:flex; align-items:center; justify-content:center;">
+                            <canvas id="projectsStatusLineChart" width="600" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Projects Section (separate from dashboard) -->
+                <div id="projects-content" style="display:none;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+                        <h2 style="letter-spacing: 1px;">PROJECTS</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+                        <input id="projectSearchInput" type="text" placeholder="Search project..." style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; width: 220px;">
+                        <button id="projectSearchBtn" style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 8px 12px; cursor: pointer;"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div style="margin-bottom: 18px;">
+                        <button class="proj-filter-btn" data-status="all" style="padding: 7px 18px; border: 1px solid #000; background: #000; color: #fff; border-radius: 4px; margin-right: 6px; cursor: pointer;">All Projects</button>
+                        <button class="proj-filter-btn" data-status="active" style="padding: 7px 18px; border: 1px solid #ccc; background: #fff; color: #000; border-radius: 4px; margin-right: 6px; cursor: pointer;">Active</button>
+                        <button class="proj-filter-btn" data-status="completed" style="padding: 7px 18px; border: 1px solid #ccc; background: #fff; color: #000; border-radius: 4px; margin-right: 6px; cursor: pointer;">Completed</button>
+                    </div>
+                    <!-- Project Cards Container -->
+                    <div id="projectsCardsContainer" style="display: flex; flex-wrap: wrap; gap: 32px;"></div>
+                    <!-- Project Detail View -->
+                    <div id="projectDetailView" style="display: none;">
+                        <button id="backToProjectsBtn" style="margin-bottom: 20px; padding: 8px 16px; background: #fff; border: 1px solid #000; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-arrow-left"></i> Back to Projects
+                        </button>
+                        <div id="projectDetailContent" style="background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 24px;">
+                            <!-- Project details will be loaded here -->
+                        </div>
+                    </div>
+                    <div id="projectsEmpty" style="color: #888; margin-top: 12px; display: none;">No projects found.</div>
+                </div>
+                <!-- Messages Section -->
+                <div id="messages-content" style="display:none;">
+                    <h2>Messages</h2>
+                    <p>Your messages will appear here.</p>
+                </div>
+                <!-- Settings Section -->
+                <div id="settings-content" style="display:none;">
+                    <h2>Settings</h2>
+                    <div style="max-width: 420px; margin: 0 auto;">
+                        <!-- Profile Picture -->
+                        <div style="margin-bottom: 24px;">
+                            <label style="font-weight: 500;">Profile Picture</label><br>
+                            <input type="file" id="profilePicInput" accept="image/*" style="margin-top: 8px;">
+                            <div id="profilePicPreview" style="margin-top: 10px; width: 80px; height: 80px; border-radius: 50%; background: #eee; background-size: cover; background-position: center;"></div>
+                            <button id="saveProfilePicBtn" style="margin-top: 10px; padding: 8px 18px; border-radius: 6px; border: none; background: #000; color: #fff; cursor: pointer;">
+                                Save Profile Picture
+                                <span id="profilePicSpinner" class="loading-spinner" style="display: none;"></span>
+                            </button>
+                            <div id="saveProfilePicMsg" style="font-size: 13px; color: #388e3c; margin-top: 6px;"></div>
+                        </div>
+                        <!-- Change Name section -->
+                        <div style="margin-bottom: 24px;">
+                            <label style="font-weight: 500;">Display Name</label><br>
+                            <input type="text" id="displayNameInput" style="margin-top: 8px; padding: 8px; width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                            <button id="saveNameBtn" style="margin-top: 10px; padding: 8px 18px; border-radius: 6px; border: none; background: #000; color: #fff; cursor: pointer;">
+                                Save Name
+                                <span id="saveNameSpinner" class="loading-spinner" style="display: none;"></span>
+                            </button>
+                            <div id="saveNameMsg" style="font-size: 13px; color: #388e3c; margin-top: 6px;"></div>
+                        </div>
+
+                        <!-- Dark Mode Toggle -->
+                        <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+                            <label style="font-weight: 500;">Dark Mode</label>
+                            <label class="switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Archive Content -->
+                <div id="archive-content" style="display:none;">
+                    <h2>Archived Projects</h2>
+                    <div style="margin-bottom: 24px;">
+                        <input type="text" id="archiveSearchInput" placeholder="Search archived project..." style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; width: 220px;">
+                        <button id="archiveSearchBtn" style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 8px 12px; cursor: pointer;"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div id="archivedProjectsList" style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));"></div>
+                    <div id="archiveEmpty" style="color: #888; margin-top: 12px; display: none;">No archived projects found.</div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Add Project View Modal -->
+        <div id="projectViewModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:3000; justify-content:center; align-items:center;">
+          <div style="background:#fff; padding:32px 24px; border-radius:10px; min-width:340px; max-width:90vw; box-shadow:0 2px 16px rgba(0,0,0,0.15); display:flex; flex-direction:column; align-items:stretch; position:relative;">
+            <button onclick="closeProjectViewModal()" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:22px; cursor:pointer;">&times;</button>
+            <h3 id="pvName" style="margin-bottom:8px;"></h3>
+            <div id="pvDetails" style="font-size:15px; color:#444; margin-bottom:16px;"></div>
+            
+            <!-- Team Members Section -->
+            <div id="pvTeamSection" style="margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <label style="font-weight:500;">Team Members:</label>
+                <button id="addMemberBtn" onclick="showAddTeamMemberModal()" style="padding:4px 12px; border-radius:4px; border:1px solid #1976d2; background:#fff; color:#1976d2; cursor:pointer; font-size:13px; display:none;">Add Member</button>
+              </div>
+              <div id="pvTeamList" style="font-size:14px; color:#444;"></div>
+            </div>
+    
+            <div id="pvFileSection" style="margin-bottom:16px;">
+              <label style="font-weight:500;">Upload File:</label><br>
+              <input type="file" id="pvFileInput" />
+              <button id="pvUploadBtn" style="margin-left:8px; padding:6px 14px; border-radius:4px; border:none; background:#1976d2; color:#fff; cursor:pointer;">Upload</button>
+              <span id="pvUploadStatus" style="font-size:13px; margin-left:8px;"></span>
+            </div>
+            <div id="pvFilesList" style="margin-bottom:8px;"></div>
+          </div>
+        </div>
+    
+        <!-- Add Team Member Modal -->
+        <div id="addTeamMemberModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:3001; justify-content:center; align-items:center;">
+          <div style="background:#fff; padding:24px; border-radius:10px; min-width:300px; max-width:90vw; box-shadow:0 2px 16px rgba(0,0,0,0.15);">
+            <h3 style="margin-bottom:16px;">Add Team Member</h3>
+            <select id="teamMemberSelect" style="width:100%; padding:8px; margin-bottom:16px; border:1px solid #ccc; border-radius:4px;">
+              <option value="">Select a team member...</option>
+            </select>
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+              <button onclick="closeAddTeamMemberModal()" style="padding:8px 16px; border-radius:4px; border:1px solid #ccc; background:#fff; cursor:pointer;">Cancel</button>
+              <button onclick="addTeamMember()" style="padding:8px 16px; border-radius:4px; border:none; background:#1976d2; color:#fff; cursor:pointer;">Add</button>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Add Task Modal -->
+        <div id="addTaskModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(4px);">
+            <div style="position: relative; background: #fff; width: 90%; max-width: 500px; margin: 40px auto; border-radius: 12px; padding: 0; box-shadow: 0 4px 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; height: 90vh; max-height: 600px;">
+                <button onclick="closeAddTaskModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s ease; z-index: 2;">×</button>
+                <div style="flex: 1 1 auto; overflow-y: auto; padding: 32px; display: flex; flex-direction: column;">
+                    <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: 600; color: #333;">Add New Task</h3>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Task Title</label>
+                        <input type="text" id="taskTitleInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; transition: all 0.2s ease;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Description</label>
+                        <textarea id="taskDescriptionInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; min-height: 120px; font-size: 15px; resize: vertical; transition: all 0.2s ease;"></textarea>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Assigned To</label>
+                        <select id="taskAssigneeSelect" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; background-color: #fff; transition: all 0.2s ease;">
+                            <option value="">Select team member...</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Priority</label>
+                        <select id="taskPrioritySelect" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; background-color: #fff; transition: all 0.2s ease;">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Due Date</label>
+                        <input type="date" id="taskDueDateInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; transition: all 0.2s ease;">
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 12px; padding: 24px 32px; border-top: 1px solid #eee; background: #fafbfc; flex-shrink: 0;">
+                    <button onclick="closeAddTaskModal()" style="padding: 12px 24px; border-radius: 8px; border: 1px solid #ddd; background: #fff; color: #666; cursor: pointer; font-size: 15px; font-weight: 500; transition: all 0.2s ease;">Cancel</button>
+                    <button onclick="addTask()" style="padding: 12px 24px; border-radius: 8px; border: none; background: #1976d2; color: #fff; cursor: pointer; font-size: 15px; font-weight: 500; transition: all 0.2s ease;">Add Task</button>
+                </div>
+            </div>
+        </div>
+    
+        <script>
+            // Add this at the beginning of your script section
+            document.addEventListener('DOMContentLoaded', function() {
+                // Add click event listeners to menu items
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Remove active class from all items
+                        document.querySelectorAll('.nav-item').forEach(navItem => {
+                            navItem.classList.remove('active');
+                        });
+                        // Add active class to clicked item
+                        this.classList.add('active');
+                        
+                        // Hide all content sections first
+                        document.getElementById('dashboard-content').style.display = 'none';
+                        document.getElementById('projects-content').style.display = 'none';
+                        document.getElementById('messages-content').style.display = 'none';
+                        document.getElementById('settings-content').style.display = 'none';
+                        document.getElementById('archive-content').style.display = 'none';
+                        
+                        // Reset project detail view
+                        document.getElementById('projectDetailView').style.display = 'none';
+                        document.getElementById('projectsCardsContainer').style.display = 'flex';
+                        
+                        // Show appropriate content based on menu item
+                        const menuItem = this.textContent.trim();
+                        if (menuItem === 'Dashboard') {
+                            document.getElementById('dashboard-content').style.display = '';
+                        } else if (menuItem === 'Projects') {
+                            document.getElementById('projects-content').style.display = '';
+                            // Refresh projects list
+                            if (typeof loadProjectsForCurrentUser === 'function') {
+                                loadProjectsForCurrentUser();
+                            }
+                        } else if (menuItem === 'Messages') {
+                            document.getElementById('messages-content').style.display = '';
+                        } else if (menuItem === 'Settings') {
+                            document.getElementById('settings-content').style.display = '';
+                        } else if (menuItem === 'Archive') {
+                            document.getElementById('archive-content').style.display = '';
+                            loadArchivedProjects();
+                        }
+                    });
+                });
+            });
+    
+            // User info display logic
+            function renderSidebarUser() {
+              console.log("Starting renderSidebarUser function");
+              // Try to get user info from Firebase Auth
+              let user = null;
+              if (window.firebase && firebase.auth().currentUser) {
+                user = firebase.auth().currentUser;
+                console.log("Firebase Auth user found:", user.email);
+              }
+              
+              // Fallback: try to get from localStorage (for email/OTP login)
+              let email = '';
+              let photoURL = '';
+              let uid = '';
+              let displayName = '';
+              
+              if (user) {
+                email = user.email || '';
+                photoURL = user.photoURL || '';
+                uid = user.uid;
+                displayName = user.displayName || '';
+                console.log("User data from Firebase Auth:", { email, uid, displayName });
+                
+                // Store email in localStorage as backup
+                if (email) {
+                  localStorage.setItem('userEmail', email);
+                }
+              } else {
+                // Try to get email from localStorage (multiple sources)
+                email = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || '';
+                console.log("Email from localStorage:", email);
+              }
+              
+              // Set avatar (default if missing)
+              const avatarDiv = document.getElementById('sidebarUserAvatar');
+              if (photoURL) {
+                avatarDiv.style.backgroundImage = `url('${photoURL}')`;
+              } else {
+                // Default avatar (SVG)
+                avatarDiv.innerHTML = `<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="28" cy="28" r="28" fill="#e0e0e0"/><path d="M28 29c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7 3.582 7 8 7zm0 2c-5.33 0-16 2.686-16 8v3h32v-3c0-5.314-10.67-8-16-8z" fill="#bdbdbd"/></svg>`;
+              }
+    
+              // Try to get profile picture from localStorage if not available from Firebase
+              if (!photoURL) {
+                  photoURL = localStorage.getItem('userPhotoURL');
+                  if (photoURL) {
+                      avatarDiv.style.backgroundImage = `url('${photoURL}')`;
+                      avatarDiv.innerHTML = '';
+                  }
+              }
+    
+              // Get name and email elements
+              const nameElement = document.getElementById('sidebarUserName');
+              const emailElement = document.getElementById('sidebarUserEmail');
+    
+              // Try to get name from localStorage if not available from Firebase
+              if (!displayName) {
+                  displayName = localStorage.getItem('userName');
+              }
+              if (displayName) {
+                  nameElement.textContent = displayName;
+              }
+              
+              // Make sure the email element is visible and styled properly
+              if (emailElement) {
+                emailElement.style.display = 'block';
+                emailElement.style.fontSize = '12px';
+                emailElement.style.color = '#666';
+                emailElement.style.textAlign = 'center';
+                emailElement.style.padding = '0 10px';
+                emailElement.style.marginBottom = '10px';
+                emailElement.style.maxWidth = '100%';
+                emailElement.style.wordBreak = 'break-all';
+              }
+              
+              // Always set email immediately if we have it
+              if (email && emailElement) {
+                emailElement.textContent = email;
+                console.log("Email set immediately:", email);
+              }
+              
+              if (uid && window.firebase && firebase.database) {
+                console.log("Fetching user data from Firebase database for UID:", uid);
+                // Try to get user data from Firebase database
+                firebase.database().ref('users/' + uid).once('value')
+                  .then((snapshot) => {
+                    const userData = snapshot.val();
+                    console.log("User data from Firebase database:", userData);
+                    
+                    if (userData) {
+                      // If we have user data in the database
+                      if (userData.name) {
+                        nameElement.textContent = userData.name;
+                      } else if (displayName) {
+                        nameElement.textContent = displayName;
+                      } else {
+                        // If no name is available, use the first part of the email
+                        nameElement.textContent = email.split('@')[0];
+                      }
+                      
+                      // Always show email in the email element - prioritize the email from Firebase database
+                      if (userData.email) {
+                        console.log("Setting email from database:", userData.email);
+                        emailElement.textContent = userData.email;
+                        localStorage.setItem('userEmail', userData.email); // Store for future sessions
+                      } else {
+                        console.log("No email in database, using auth email:", email);
+                        emailElement.textContent = email;
+                      }
+                    } else {
+                      // If no user data in database
+                      console.log("No user data in database, using auth data");
+                      if (displayName) {
+                        nameElement.textContent = displayName;
+                      } else {
+                        nameElement.textContent = email.split('@')[0];
+                      }
+                      emailElement.textContent = email;
+                      
+                      // Create user data if it doesn't exist
+                      if (uid && email) {
+                        firebase.database().ref('users/' + uid).set({
+                          email: email,
+                          createdAt: firebase.database.ServerValue.TIMESTAMP
+                        });
+                      }
+                    }
+                    
+                    console.log("Final email displayed:", emailElement.textContent);
+                  })
+                  .catch((error) => {
+                    console.error("Error fetching user data:", error);
+                    // Fallback if database fetch fails
+                    if (displayName) {
+                      nameElement.textContent = displayName;
+                    } else {
+                      nameElement.textContent = email.split('@')[0];
+                    }
+                    emailElement.textContent = email;
+                    console.log("Email set after error:", email);
+                  });
+              } else {
+                console.log("No Firebase database or UID, using basic data");
+                // If no Firebase auth or database
+                if (displayName) {
+                  nameElement.textContent = displayName;
+                } else {
+                  // Use first part of email as name if no display name
+                  nameElement.textContent = email.split('@')[0];
+                }
+                emailElement.textContent = email;
+                console.log("Email set (no Firebase):", email);
+              }
+            }
+            // Add this function to directly set the email in the sidebar
+            function setEmailDirectly() {
+              console.log("Setting email directly");
+              
+              // Try to get the email from multiple sources
+              let email = '';
+              
+              // 1. Try Firebase Auth
+              if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                const user = firebase.auth().currentUser;
+                email = user.email || '';
+                console.log("Email from Firebase Auth:", email);
+                
+                // Store in localStorage for persistence
+                if (email) {
+                  localStorage.setItem('userEmail', email);
+                }
+                
+                // 2. Try Firebase Database
+                if (user.uid && firebase.database) {
+                  firebase.database().ref('users/' + user.uid).once('value')
+                    .then(snapshot => {
+                      const userData = snapshot.val();
+                      if (userData && userData.email) {
+                        email = userData.email;
+                        console.log("Email from Firebase Database:", email);
+                        document.getElementById('sidebarUserEmail').textContent = email;
+                        document.getElementById('sidebarUserEmail').style.display = 'block';
+                        localStorage.setItem('userEmail', email);
+                      } else if (email) {
+                        // Create user data if it doesn't exist
+                        firebase.database().ref('users/' + user.uid).set({
+                          email: email,
+                          createdAt: firebase.database.ServerValue.TIMESTAMP
+                        });
+                      }
+                    })
+                    .catch(err => {
+                      console.error("Error getting user data:", err);
+                    });
+                }
+              }
+              
+              // 3. Try localStorage (multiple sources)
+              if (!email) {
+                email = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || '';
+                console.log("Email from localStorage:", email);
+              }
+              
+              // Set the email if we have one
+              if (email) {
+                document.getElementById('sidebarUserEmail').textContent = email;
+                document.getElementById('sidebarUserEmail').style.display = 'block';
+              }
+            }
+    
+            // Log out function
+            function logoutUser() {
+              // Save email before logout for potential use in next session
+              const currentEmail = document.getElementById('sidebarUserEmail').textContent;
+              if (currentEmail) {
+                localStorage.setItem('lastLoggedInEmail', currentEmail);
+              }
+              
+              // Firebase sign out if available
+              if (window.firebase && firebase.auth) {
+                firebase.auth().signOut();
+              }
+              
+              // Remove localStorage items but keep lastLoggedInEmail
+              localStorage.removeItem('tempEmail');
+              localStorage.removeItem('tempOTP');
+              localStorage.removeItem('isAdmin');
+              localStorage.removeItem('tempPhone');
+              
+              // Redirect to splash screen
+              window.location.href = 'index2.html';
+            }
+    
+            // Add this code at the end of the DOMContentLoaded event listener:
+    
+            window.addEventListener('DOMContentLoaded', function() {
+              // ... existing code ...
+              
+              // Add this to ensure email is displayed even if Firebase is slow to initialize
+              const lastEmail = localStorage.getItem('lastLoggedInEmail') || localStorage.getItem('userEmail') || localStorage.getItem('tempEmail');
+              if (lastEmail && document.getElementById('sidebarUserEmail')) {
+                document.getElementById('sidebarUserEmail').textContent = lastEmail;
+                document.getElementById('sidebarUserEmail').style.display = 'block';
+              }
+            });
+    
+            // Add a function to load user data for projects that ensures we're using the correct email from Firebase
+            function loadProjectsForCurrentUser() {
+              console.log("Loading projects for current user");
+              
+              // Get the user's email from multiple sources
+              let userEmail = '';
+              
+              if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                const user = firebase.auth().currentUser;
+                userEmail = user.email || '';
+                console.log("Email from Firebase Auth:", userEmail);
+              }
+              
+              if (!userEmail) {
+                userEmail = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || localStorage.getItem('lastLoggedInEmail') || '';
+                console.log("Email from localStorage:", userEmail);
+              }
+              
+              // Update the sidebar email display
+              if (userEmail) {
+                document.getElementById('sidebarUserEmail').textContent = userEmail;
+                document.getElementById('sidebarUserEmail').style.display = 'block';
+              }
+              
+              // Now fetch projects where this email is the leader
+              if (userEmail) {
+                console.log("Fetching projects for email:", userEmail);
+                fetchProjectsFromAdminUser(userEmail);
+              } else {
+                console.error("No user email found, cannot fetch projects");
+                document.getElementById('projectsEmpty').textContent = 'Please log in to view your projects.';
+                document.getElementById('projectsEmpty').style.display = 'block';
+              }
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                const userEmail = firebase.auth().currentUser?.email || localStorage.getItem('userEmail') || '';
+                if (userEmail) {
+                    loadUserTasks(); // This should be called when dashboard loads
+                }
+            });
+
+            // Also add this to ensure tasks are loaded when auth state changes
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    loadUserTasks();
+                }
+            });
+    
+            // Initial load: show dashboard, hide others
+            window.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('dashboard-content').style.display = '';
+                document.getElementById('projects-content').style.display = 'none';
+                document.getElementById('messages-content').style.display = 'none';
+                document.getElementById('settings-content').style.display = 'none';
+                document.getElementById('archive-content').style.display = 'none';
+                
+                console.log("DOM Content Loaded");
+                
+                // Add this to ensure we load user data after Firebase is initialized
+                if (window.firebase && firebase.auth) {
+                  console.log("Firebase Auth available, waiting for auth state");
+                  firebase.auth().onAuthStateChanged(function(user) {
+                    console.log("Auth state changed, user:", user ? user.email : "null");
+                    renderSidebarUser();
+                    setTimeout(loadProjectsForCurrentUser, 500); // Wait for Firebase to be fully ready
+                  });
+                } else {
+                  console.log("Firebase Auth not available, using fallback");
+                  renderSidebarUser();
+                  setTimeout(loadProjectsForCurrentUser, 500);
+                }
+            });
+    
+            // --- Projects Section Logic ---
+            // New function to fetch projects from admin-user node
+            function fetchProjectsFromAdminUser(userEmail) {
+                console.log("=== Starting fetchProjectsFromAdminUser ===");
+                console.log("User email to search for:", userEmail);
+                
+                const cardsContainer = document.getElementById('projectsCardsContainer');
+                const projectsEmpty = document.getElementById('projectsEmpty');
+                
+                // Clear existing content
+                cardsContainer.innerHTML = '';
+                projectsEmpty.style.display = 'none';
+                
+                if (!userEmail || !(window.firebase && firebase.database)) {
+                    console.error("Invalid email or Firebase not initialized");
+                    projectsEmpty.textContent = 'No projects found.';
+                    projectsEmpty.style.display = 'block';
+                    return;
+                }
+    
+                // Normalize the email for comparison
+                const normalizedUserEmail = userEmail.toLowerCase().trim();
+                console.log("Normalized user email:", normalizedUserEmail);
+    
+                // Fetch projects from projects/admin-user
+                firebase.database().ref('projects/admin-user').once('value')
+                    .then(snapshot => {
+                        const matchingProjects = [];
+                        const archivedProjects = [];
+                        
+                        if (snapshot.exists()) {
+                            snapshot.forEach(projectSnapshot => {
+                                const projectId = projectSnapshot.key;
+                                const projectData = projectSnapshot.val();
+                                projectData._id = projectId;
+
+                                const isLeader = projectData.leader && projectData.leader.toLowerCase().trim() === normalizedUserEmail;
+                                const isTeamMember = projectData.teamMembers && Object.values(projectData.teamMembers).some(member => 
+                                    member.email && member.email.toLowerCase().trim() === normalizedUserEmail
+                                );
+
+                                if (isLeader || isTeamMember) {
+                                    if (projectData.archived) {
+                                        archivedProjects.push(projectData);
+                                    } else {
+                                        projectData.role = isLeader ? 'Team Leader' : 'Team Member';
+                                        matchingProjects.push(projectData);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        console.log("\n=== Results ===");
+                        console.log("Total matching projects found:", matchingProjects.length);
+                        console.log("Matching projects:", matchingProjects);
+                        
+                        // Display projects or empty message
+                        if (matchingProjects.length === 0) {
+                            console.log("No matching projects found - showing empty message");
+                            projectsEmpty.textContent = 'No active projects found where you are a team member.';
+                            projectsEmpty.style.display = 'block';
+                        } else {
+                            console.log("Rendering project cards");
+                            // Sort projects by date (newest first)
+                            matchingProjects.sort((a, b) => {
+                                const dateA = a.date ? new Date(a.date) : new Date(0);
+                                const dateB = b.date ? new Date(b.date) : new Date(0);
+                                return dateB - dateA;
+                            });
+                            
+                            // Render each project card
+                            matchingProjects.forEach(project => {
+                                const card = document.createElement('div');
+                                card.style.width = '270px';
+                                card.style.background = '#fff';
+                                card.style.border = '1px solid #ddd';
+                                card.style.borderRadius = '8px';
+                                card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                                card.style.padding = '20px 18px 18px 18px';
+                                card.style.display = 'flex';
+                                card.style.flexDirection = 'column';
+                                card.style.justifyContent = 'space-between';
+                                card.innerHTML = `
+                                    <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                                        <div style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">${project.name ? project.name.trim() : 'Untitled Project'}</div>
+                                        <div style="font-size: 18px; cursor: pointer; color: #888;">&#8942;</div>
+                                    </div>
+                                    <div style="font-size: 13px; color: #444; margin-bottom: 10px; min-height: 38px;">${project.description || ''}</div>
+                                    <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                                        <span style="margin-right: 10px;"><b>${project.status || 'In Progress'}</b></span>
+                                        <i class="fas fa-clock"></i> ${project.date ? new Date(project.date).toLocaleDateString() : ''}
+                                    </div>
+                                    <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                                        <b>Type:</b> ${project.type || ''} &nbsp; <b>Duration:</b> ${project.duration || ''}
+                                    </div>
+                                    <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                                        <b>Budget:</b> ${project.budget ? '₱' + project.budget : ''} &nbsp; <b>Location:</b> ${project.location || ''}
+                                    </div>
+                                    <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                                        <b>Team Leader:</b> <span style="color: #000; font-weight: 500;">${project.leader || ''}</span>
+                                    </div>
+                                    <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                                        <b>Your Role:</b> <span style="color: #000; font-weight: 500;">${project.role || 'Team Member'}</span>
+                                    </div>
+                                    <div style="margin-bottom: 8px;">
+                                        <div style="font-size: 13px; color: #222; margin-bottom: 2px;">Progress</div>
+                                        <div style="background: #eee; border-radius: 4px; height: 8px; width: 100%;">
+                                            <div style="background: #000; height: 8px; border-radius: 4px; width: ${project.progress || 0}%; transition: width 0.3s;"></div>
+                                        </div>
+                                        <div style="font-size: 13px; color: #222; margin-top: 2px;">${project.progress || 0}%</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div>
+                                            <span style="font-size: 18px;">👤👤👤👤</span>
+                                        </div>
+                                        <button class="view-project-btn" data-project-id="${project._id}" style="background: #fff; border: 1px solid #000; border-radius: 4px; padding: 5px 16px; font-size: 14px; cursor: pointer;">VIEW</button>
+                                    </div>
+                                `;
+                                cardsContainer.appendChild(card);
+                            });
+                        }
+                        
+                        // Update dashboard summary with the same data
+                        updateDashboardWithProjects(matchingProjects);
+                        displayProjectProgress(matchingProjects);
+                        countUserArchivedProjects(archivedProjects);
+                    })
+                    .catch(err => {
+                        console.error('Error fetching projects:', err);
+                        projectsEmpty.textContent = 'Error loading projects. Please try again.';
+                        projectsEmpty.style.display = 'block';
+                    });
+            }
+    
+            // Filter and search events
+            document.querySelectorAll('.proj-filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.proj-filter-btn').forEach(b => {
+                        b.style.background = '#fff';
+                        b.style.color = '#000';
+                        b.style.border = '1px solid #ccc';
+                    });
+                    this.style.background = '#000';
+                    this.style.color = '#fff';
+                    this.style.border = '1px solid #000';
+                    
+                    // Get the status filter
+                    const status = this.getAttribute('data-status');
+                    
+                    // Get the current user's email
+                    const email = document.getElementById('sidebarUserEmail').textContent;
+                    
+                    // Apply filters
+                    applyProjectFilters(email, status);
+                });
+            });
+    
+            // Search button click handler
+            document.getElementById('projectSearchBtn').onclick = function() {
+                const searchTerm = document.getElementById('projectSearchInput').value;
+                const email = document.getElementById('sidebarUserEmail').textContent;
+                
+                // Get the currently selected status filter
+                const activeFilterBtn = document.querySelector('.proj-filter-btn[style*="background: #000"]');
+                const status = activeFilterBtn ? activeFilterBtn.getAttribute('data-status') : 'all';
+                
+                // Apply filters with search term
+                applyProjectFilters(email, status, searchTerm);
+            };
+    
+            // Function to apply filters to projects
+            function applyProjectFilters(userEmail, statusFilter = 'all', searchTerm = '') {
+        console.log("Applying filters - Status:", statusFilter, "Search:", searchTerm);
+        
+        const matchingProjects = [];
+        
+        // First check projects/admin-user path (new structure)
+        firebase.database().ref('projects/admin-user').once('value')
+            .then(snapshot => {
+                // Check if we have projects
+                if (snapshot.exists()) {
+                    // Loop through all project IDs in projects/admin-user
+                    snapshot.forEach(projectSnapshot => {
+                        const projectId = projectSnapshot.key;
+                        const projectData = projectSnapshot.val();
+                        
+                        // Check if this project has a leader field that matches the user's email
+                        if (projectData.leader && projectData.leader.toLowerCase() === userEmail.toLowerCase()) {
+                            // Apply status filter
+                            if (statusFilter === 'all' || (projectData.status || 'active').toLowerCase() === statusFilter.toLowerCase()) {
+                                // Apply search filter
+                                if (!searchTerm || (projectData.name && projectData.name.toLowerCase().includes(searchTerm.toLowerCase()))) {
+                                    // Add project to our list with its ID
+                                    projectData._id = projectId;
+                                    matchingProjects.push(projectData);
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Then check admin-user path (old structure)
+                return firebase.database().ref('admin-user').once('value');
+            })
+            .then(adminSnapshot => {
+                if (adminSnapshot.exists()) {
+                    // Loop through all project IDs in admin-user
+                    adminSnapshot.forEach(projectSnapshot => {
+                        const projectId = projectSnapshot.key;
+                        const projectData = projectSnapshot.val();
+                        
+                        // Check if this project has a leader field that matches the user's email
+                        if (projectData.leader && projectData.leader.toLowerCase() === userEmail.toLowerCase()) {
+                            // Apply status filter
+                            if (statusFilter === 'all' || (projectData.status || 'active').toLowerCase() === statusFilter.toLowerCase()) {
+                                // Apply search filter
+                                if (!searchTerm || (projectData.name && projectData.name.toLowerCase().includes(searchTerm.toLowerCase()))) {
+                                    // Add project to our list with its ID
+                                    projectData._id = projectId;
+                                    matchingProjects.push(projectData);
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Display filtered projects
+                displayFilteredProjects(matchingProjects);
+            })
+            .catch(err => {
+                console.error('Error applying filters:', err);
+                document.getElementById('projectsEmpty').textContent = 'Error filtering projects. Please try again.';
+                document.getElementById('projectsEmpty').style.display = 'block';
+            });
+    }
+    
+            // Function to display filtered projects
+            function displayFilteredProjects(projects) {
+                const cardsContainer = document.getElementById('projectsCardsContainer');
+                const projectsEmpty = document.getElementById('projectsEmpty');
+                
+                // Clear existing content
+                cardsContainer.innerHTML = '';
+                projectsEmpty.style.display = 'none';
+                
+                if (projects.length === 0) {
+                    projectsEmpty.textContent = 'No projects found matching your filters.';
+                    projectsEmpty.style.display = 'block';
+                    return;
+                }
+                
+                // Sort projects by date (newest first)
+                projects.sort((a, b) => {
+                    const dateA = a.date ? new Date(a.date) : new Date(0);
+                    const dateB = b.date ? new Date(b.date) : new Date(0);
+                    return dateB - dateA;
+                });
+                
+                // Render each project card
+                projects.forEach(project => {
+                    const card = document.createElement('div');
+                    card.style.width = '270px';
+                    card.style.background = '#fff';
+                    card.style.border = '1px solid #ddd';
+                    card.style.borderRadius = '8px';
+                    card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                    card.style.padding = '20px 18px 18px 18px';
+                    card.style.display = 'flex';
+                    card.style.flexDirection = 'column';
+                    card.style.justifyContent = 'space-between';
+                    card.innerHTML = `
+                        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                            <div style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">${project.name ? project.name.trim() : 'Untitled Project'}</div>
+                            <div style="font-size: 18px; cursor: pointer; color: #888;">&#8942;</div>
+                        </div>
+                        <div style="font-size: 13px; color: #444; margin-bottom: 10px; min-height: 38px;">${project.description || ''}</div>
+                        <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                            <span style="margin-right: 10px;"><b>${project.status || 'In Progress'}</b></span>
+                            <i class="fas fa-clock"></i> ${project.date ? new Date(project.date).toLocaleDateString() : ''}
+                        </div>
+                        <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                            <b>Type:</b> ${project.type || ''} &nbsp; <b>Duration:</b> ${project.duration || ''}
+                        </div>
+                        <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                            <b>Budget:</b> ${project.budget ? '₱' + project.budget : ''} &nbsp; <b>Location:</b> ${project.location || ''}
+                        </div>
+                        <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                            <b>Team Leader:</b> <span style="color: #000; font-weight: 500;">${project.leader || ''}</span>
+                        </div>
+                        <div style="font-size: 13px; color: #888; margin-bottom: 6px;">
+                            <b>Your Role:</b> <span style="color: #000; font-weight: 500;">${project.role || 'Team Member'}</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <div style="font-size: 13px; color: #222; margin-bottom: 2px;">Progress</div>
+                            <div style="background: #eee; border-radius: 4px; height: 8px; width: 100%;">
+                                <div style="background: #000; height: 8px; border-radius: 4px; width: ${project.progress || 0}%; transition: width 0.3s;"></div>
+                            </div>
+                            <div style="font-size: 13px; color: #222; margin-top: 2px;">${project.progress || 0}%</div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <span style="font-size: 18px;">👤👤👤👤</span>
+                            </div>
+                            <button class="view-project-btn" data-project-id="${project._id}" style="background: #fff; border: 1px solid #000; border-radius: 4px; padding: 5px 16px; font-size: 14px; cursor: pointer;">VIEW</button>
+                        </div>
+                    `;
+                    cardsContainer.appendChild(card);
+                });
+            }
+    
+            // --- Team Leader Autocomplete ---
+            // Replace Team Leader input with a datalist for autocomplete
+            (function() {
+                const leaderInput = document.getElementById('npLeader');
+                if (leaderInput && !document.getElementById('teamLeaderList')) {
+                    const datalist = document.createElement('datalist');
+                    datalist.id = 'teamLeaderList';
+                    leaderInput.setAttribute('list', 'teamLeaderList');
+                    leaderInput.parentNode.insertBefore(datalist, leaderInput.nextSibling);
+                }
+            })();
+    
+            function fetchUsersForTeamLeader() {
+                if (!(window.firebase && firebase.database)) return;
+                const datalist = document.getElementById('teamLeaderList');
+                if (!datalist) return;
+                
+                datalist.innerHTML = '';
+                firebase.database().ref('users').once('value').then(snapshot => {
+                    snapshot.forEach(childSnap => {
+                        const user = childSnap.val();
+                        if (user && user.email) {
+                            const option = document.createElement('option');
+                            option.value = user.email;
+                            option.label = user.email + (user.name ? ' (' + user.name + ')' : '');
+                            datalist.appendChild(option);
+                        }
+                    });
+                });
+            }
+    
+            // --- Dashboard Summary Logic ---
+            function updateDashboardWithProjects(projects) {
+                console.log("Updating dashboard with projects:", projects.length);
+                
+                // Update summary counts
+                let total = projects.length;
+                let inprogress = 0;
+                
+                // Count by status
+                projects.forEach(project => {
+                    if ((project.status || '').toLowerCase() !== 'completed') {
+                        inprogress++;
+                    }
+                });
+                
+                document.getElementById('summary-total').textContent = total;
+                document.getElementById('summary-inprogress').textContent = inprogress;
+            }
+
+            // New: Display project progress in dashboard
+            function displayProjectProgress(projects) {
+                const progressDiv = document.getElementById('dashboard-progress');
+                if (!progressDiv) return;
+
+                if (!projects || projects.length === 0) {
+                    progressDiv.innerHTML = 'No projects to show progress for.';
+                    return;
+                }
+
+                // Sort by progress descending, show up to 3 projects
+                const topProjects = projects
+                    .filter(p => typeof p.progress !== 'undefined')
+                    .sort((a, b) => (b.progress || 0) - (a.progress || 0))
+                    .slice(0, 3);
+
+                let html = topProjects.map(project => `
+                    <div style="margin-bottom: 18px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">${project.name || 'Untitled Project'}</div>
+                        <div style="background: #eee; border-radius: 4px; height: 8px; width: 100%; margin-bottom: 4px;">
+                            <div style="background: #1976d2; height: 8px; border-radius: 4px; width: ${project.progress || 0}%; transition: width 0.3s;"></div>
+                        </div>
+                        <div style="font-size: 13px; color: #666;">${project.progress || 0}% complete</div>
+                    </div>
+                `).join('');
+
+                // If there are more projects, add a "See all" button
+                if (projects.length > 3) {
+                    html += `<button id="seeAllProgressBtn" style="margin-top: 8px; padding: 6px 16px; border-radius: 4px; border: 1px solid #1976d2; background: #fff; color: #1976d2; cursor: pointer; font-size: 14px;">See all</button>`;
+                }
+
+                progressDiv.innerHTML = html;
+
+                // Add event for "See all" button
+                const seeAllBtn = document.getElementById('seeAllProgressBtn');
+                if (seeAllBtn) {
+                    seeAllBtn.onclick = function() {
+                        // Show all projects
+                        let allHtml = projects.map(project => `
+                            <div style="margin-bottom: 18px;">
+                                <div style="font-weight: 600; margin-bottom: 4px;">${project.name || 'Untitled Project'}</div>
+                                <div style="background: #eee; border-radius: 4px; height: 8px; width: 100%; margin-bottom: 4px;">
+                                    <div style="background: #1976d2; height: 8px; border-radius: 4px; width: ${project.progress || 0}%; transition: width 0.3s;"></div>
+                                </div>
+                                <div style="font-size: 13px; color: #666;">${project.progress || 0}% complete</div>
+                            </div>
+                        `).join('');
+                        progressDiv.innerHTML = allHtml;
+                    };
+                }
+            }
+
+            // New function: count archived projects from user's project list
+            function countUserArchivedProjects(projects) {
+                let archivedCount = 0;
+                projects.forEach(project => {
+                    if (project.archived) {
+                        archivedCount++;
+                    }
+                });
+                document.getElementById('summary-completed').textContent = archivedCount;
+            }
+    
+            // --- Dashboard Tabs Logic ---
+            document.getElementById('overviewTab').onclick = function() {
+                document.getElementById('overview-section').style.display = '';
+                document.getElementById('analytics-section').style.display = 'none';
+                this.style.background = '#000';
+                this.style.color = '#fff';
+                document.getElementById('analyticsTab').style.background = '#fff';
+                document.getElementById('analyticsTab').style.color = '#000';
+            };
+            document.getElementById('analyticsTab').onclick = function() {
+                document.getElementById('overview-section').style.display = 'none';
+                document.getElementById('analytics-section').style.display = '';
+                this.style.background = '#000';
+                this.style.color = '#fff';
+                document.getElementById('overviewTab').style.background = '#fff';
+                document.getElementById('overviewTab').style.color = '#000';
+            };
+    
+            // --- Settings Section Logic ---
+            // Profile Picture Preview
+            document.getElementById('profilePicInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        document.getElementById('profilePicPreview').style.backgroundImage = `url('${evt.target.result}')`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+    
+            // Save Profile Picture
+            document.getElementById('saveProfilePicBtn').addEventListener('click', function() {
+                const file = document.getElementById('profilePicInput').files[0];
+                if (!file) {
+                    document.getElementById('saveProfilePicMsg').textContent = 'Please select an image first.';
+                    document.getElementById('saveProfilePicMsg').style.color = '#d32f2f';
+                    return;
+                }
+                
+                // Check file size - limit to 500KB to avoid database size issues
+                if (file.size > 500 * 1024) {
+                    document.getElementById('saveProfilePicMsg').textContent = 'Image too large. Please select an image under 500KB.';
+                    document.getElementById('saveProfilePicMsg').style.color = '#d32f2f';
+                    return;
+                }
+                
+                const msgDiv = document.getElementById('saveProfilePicMsg');
+                const spinner = document.getElementById('profilePicSpinner');
+                
+                // Show loading spinner
+                spinner.style.display = 'inline-block';
+                msgDiv.textContent = 'Processing image...';
+                msgDiv.style.color = '#388e3c';
+                
+                // Get current user ID
+                let uid = '';
+                
+                if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                    uid = firebase.auth().currentUser.uid;
+                } else {
+                    uid = localStorage.getItem('userId');
+                    if (!uid) {
+                        // Generate a unique ID if none exists
+                        uid = 'user_' + Date.now();
+                        localStorage.setItem('userId', uid);
+                    }
+                }
+                
+                // Convert image to Base64
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function() {
+                    const base64Image = reader.result;
+                    
+                    // Update the sidebar avatar immediately
+                    document.getElementById('sidebarUserAvatar').style.backgroundImage = `url('${base64Image}')`;
+                    document.getElementById('sidebarUserAvatar').innerHTML = '';
+                    
+                    // Store in localStorage for persistence
+                    localStorage.setItem('userPhotoURL', base64Image);
+                    
+                    // Save the Base64 image to Firebase Realtime Database
+                    firebase.database().ref('users/' + uid).update({
+                        photoURL: base64Image
+                    }).then(() => {
+                        spinner.style.display = 'none';
+                        msgDiv.textContent = 'Profile picture updated successfully!';
+                        msgDiv.style.color = '#388e3c';
+                    }).catch(error => {
+                        spinner.style.display = 'none';
+                        msgDiv.textContent = 'Error updating database: ' + error.message;
+                        msgDiv.style.color = '#d32f2f';
+                    });
+                };
+                
+                reader.onerror = function(error) {
+                    spinner.style.display = 'none';
+                    msgDiv.textContent = 'Error reading file: ' + error;
+                    msgDiv.style.color = '#d32f2f';
+                };
+            });
+    
+            // Dark Mode Toggle
+            document.getElementById('darkModeToggle').addEventListener('change', function() {
+                document.body.classList.toggle('dark-mode', this.checked);
+            });
+            // Dark Mode CSS
+            const darkModeStyle = document.createElement('style');
+            darkModeStyle.innerHTML = `
+            body.dark-mode {
+                background: #111 !important;
+                color: #fff !important;
+            }
+            body.dark-mode .sidebar, body.dark-mode .main-content, body.dark-mode .content-area, body.dark-mode .header, body.dark-mode .sidebar-user, body.dark-mode .nav-item, body.dark-mode .sidebar-user-avatar, body.dark-mode .sidebar-user-name, body.dark-mode .sidebar-user-email, body.dark-mode .logout-btn, body.dark-mode input, body.dark-mode textarea, body.dark-mode select, body.dark-mode button, body.dark-mode .proj-filter-btn, body.dark-mode .dashboard-tab-btn {
+                background: #222 !important;
+                color: #fff !important;
+                border-color: #444 !important;
+            }
+            body.dark-mode .nav-item.active, body.dark-mode .proj-filter-btn[style*='background: #000'], body.dark-mode .dashboard-tab-btn[style*='background: #000'] {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            body.dark-mode .dashboard-tab-btn[style*='background: #fff'] {
+                background: #000 !important;
+                color: #fff !important;
+            }
+            body.dark-mode #dashboard-summary > div, body.dark-mode #dashboard-activities, body.dark-mode #dashboard-progress, body.dark-mode #analytics-section > div {
+                background: #222 !important;
+                color: #fff !important;
+                border-color: #444 !important;
+            }
+            body.dark-mode .switch .slider {
+                background: #444 !important;
+            }
+            `;
+            document.head.appendChild(darkModeStyle);
+    
+            // Update the profile picture preview with current photo if available
+            const profilePicPreview = document.getElementById('profilePicPreview');
+            if (profilePicPreview) {
+                const currentPhotoURL = localStorage.getItem('userPhotoURL');
+                if (currentPhotoURL) {
+                    profilePicPreview.style.backgroundImage = `url('${currentPhotoURL}')`;
+                } else if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                    const user = firebase.auth().currentUser;
+                    if (user.photoURL) {
+                        profilePicPreview.style.backgroundImage = `url('${user.photoURL}')`;
+                    }
+                }
+            }
+    
+            // --- Analytics Line Chart Logic ---
+            let projectsStatusLineChartInstance = null;
+    
+            function showProjectsStatusLineChart(userEmail) {
+                // Fetch all projects for the user (as leader or team member)
+                firebase.database().ref('projects/admin-user').once('value').then(snapshot => {
+                    const allProjects = [];
+                    if (snapshot.exists()) {
+                        snapshot.forEach(projectSnapshot => {
+                            const project = projectSnapshot.val();
+                            // Include projects where user is leader or team member
+                            const isLeader = project.leader && project.leader.toLowerCase().trim() === userEmail.toLowerCase().trim();
+                            const isTeamMember = project.teamMembers && Object.values(project.teamMembers).some(member => 
+                                member.email && member.email.toLowerCase().trim() === userEmail.toLowerCase().trim()
+                            );
+                            if (isLeader || isTeamMember) {
+                                allProjects.push(project);
+                            }
+                        });
+                    }
+                    // Group by month and status
+                    const statusTypes = ['Started', 'Working', 'Complete'];
+                    // We'll use the 'status' field, but map to these three for the chart
+                    const statusMap = {
+                        started: 'Started',
+                        working: 'Working',
+                        inprogress: 'Working',
+                        in_progress: 'Working',
+                        complete: 'Complete',
+                        completed: 'Complete',
+                    };
+                    // Build a set of months
+                    const monthsSet = new Set();
+                    const projectCounts = {};
+                    const progressByMonth = {};
+                    allProjects.forEach(project => {
+                        let date = project.date || project.createdAt;
+                        let d = date ? new Date(date) : new Date();
+                        // Format: YYYY-MM
+                        let month = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+                        monthsSet.add(month);
+                        // Normalize status
+                        let status = (project.status || 'Started').toLowerCase().replace(/\s/g, '_');
+                        status = statusMap[status] || 'Started';
+                        if (!projectCounts[month]) projectCounts[month] = { Started: 0, Working: 0, Complete: 0 };
+                        projectCounts[month][status]++;
+                        // Collect progress for average
+                        if (!progressByMonth[month]) progressByMonth[month] = [];
+                        if (typeof project.progress === 'number') {
+                            progressByMonth[month].push(project.progress);
+                        }
+                    });
+                    // Sort months
+                    const months = Array.from(monthsSet).sort();
+                    // Prepare data for Chart.js
+                    const startedData = months.map(m => (projectCounts[m] ? projectCounts[m]['Started'] : 0));
+                    // Average progress per month for 'Working' line
+                    const workingData = months.map(m => {
+                        const arr = progressByMonth[m] || [];
+                        if (arr.length === 0) return 0;
+                        return arr.reduce((a, b) => a + b, 0) / arr.length;
+                    });
+                    const completeData = months.map(m => (projectCounts[m] ? projectCounts[m]['Complete'] : 0));
+                    // Draw chart
+                    const ctx = document.getElementById('projectsStatusLineChart').getContext('2d');
+                    if (projectsStatusLineChartInstance) {
+                        projectsStatusLineChartInstance.destroy();
+                    }
+                    projectsStatusLineChartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: months,
+                            datasets: [
+                                {
+                                    label: 'Started',
+                                    data: startedData,
+                                    borderColor: '#1976d2',
+                                    backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                                    fill: false,
+                                    tension: 0.2,
+                                    pointBackgroundColor: '#1976d2',
+                                    pointBorderColor: '#1976d2',
+                                    pointRadius: 6,
+                                    pointHoverRadius: 10,
+                                    pointStyle: 'circle',
+                                    pointBorderWidth: 2
+                                },
+                                {
+                                    label: 'Progress',
+                                    data: workingData,
+                                    borderColor: '#ffa000',
+                                    backgroundColor: 'rgba(255, 160, 0, 0.1)',
+                                    fill: false,
+                                    tension: 0.2,
+                                    pointBackgroundColor: '#ffa000',
+                                    pointBorderColor: '#ffa000',
+                                    pointRadius: 6,
+                                    pointHoverRadius: 10,
+                                    pointStyle: 'circle',
+                                    pointBorderWidth: 2
+                                },
+                                {
+                                    label: 'Complete',
+                                    data: completeData,
+                                    borderColor: '#388e3c',
+                                    backgroundColor: 'rgba(56, 142, 60, 0.1)',
+                                    fill: false,
+                                    tension: 0.2,
+                                    pointBackgroundColor: '#388e3c',
+                                    pointBorderColor: '#388e3c',
+                                    pointRadius: 6,
+                                    pointHoverRadius: 10,
+                                    pointStyle: 'circle',
+                                    pointBorderWidth: 2
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            animation: {
+                                duration: 1200,
+                                easing: 'easeOutQuart',
+                            },
+                            plugins: {
+                                legend: { position: 'top', onClick: undefined }, // default toggling
+                                title: { display: true, text: 'Projects Status Over Time' },
+                                tooltip: {
+                                    enabled: true,
+                                    mode: 'nearest',
+                                    intersect: false,
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) label += ': ';
+                                            label += context.parsed.y;
+                                            if (context.dataset.label === 'Progress') label += '%';
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            onClick: function(evt, elements) {
+                                if (elements && elements.length > 0) {
+                                    const chart = projectsStatusLineChartInstance;
+                                    const el = elements[0];
+                                    const datasetIndex = el.datasetIndex;
+                                    const index = el.index;
+                                    const datasetLabel = chart.data.datasets[datasetIndex].label;
+                                    const value = chart.data.datasets[datasetIndex].data[index];
+                                    const month = chart.data.labels[index];
+                                    alert(`Month: ${month}\n${datasetLabel}: ${value}${datasetLabel === 'Progress' ? '%' : ''}`);
+                                }
+                            },
+                            scales: {
+                                y: { beginAtZero: true, precision: 0 }
+                            }
+                        }
+                    });
+                });
+            }
+            // Show chart when Analytics tab is clicked
+            const analyticsTab = document.getElementById('analyticsTab');
+            if (analyticsTab) {
+                analyticsTab.addEventListener('click', function() {
+                    // Get the current user's email
+                    let userEmail = '';
+                    if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                        userEmail = firebase.auth().currentUser.email || '';
+                    }
+                    if (!userEmail) {
+                        userEmail = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || localStorage.getItem('lastLoggedInEmail') || '';
+                    }
+                    if (userEmail) {
+                        showProjectsStatusLineChart(userEmail);
+                    }
+                });
+            }
+    
+            // Add JS for modal and file upload
+            // Modal open/close
+            function closeProjectViewModal() {
+                const projectId = getCurrentProjectId();
+                if (projectId) {
+                    firebase.database().ref('projects/admin-user/' + projectId + '/tasks').off();
+                }
+                document.getElementById('projectViewModal').style.display = 'none';
+            }
+            function openProjectViewModal(projectId) {
+                setCurrentProjectId(projectId);
+                document.getElementById('projectsCardsContainer').style.display = 'none';
+                document.getElementById('projectDetailView').style.display = 'block';
+                document.getElementById('projectDetailView').setAttribute('data-project-id', projectId);
+                
+                // Add back button functionality
+                document.getElementById('backToProjectsBtn').onclick = function() {
+                    document.getElementById('projectDetailView').style.display = 'none';
+                    document.getElementById('projectsCardsContainer').style.display = 'flex';
+                    // Refresh the projects list when going back
+                    loadProjectsForCurrentUser();
+                };
+                
+                // Fetch project data
+                firebase.database().ref('projects/admin-user/' + projectId).once('value').then(snapshot => {
+                    const project = snapshot.val();
+                    const detailContent = document.getElementById('projectDetailContent');
+                    
+                    // Format dates
+                    const startDate = project.startDate ? new Date(project.startDate).toLocaleDateString() : 'Not specified';
+                    const endDate = project.endDate ? new Date(project.endDate).toLocaleDateString() : 'Not specified';
+                    
+                    // Format duration
+                    let duration = 'Not specified';
+                    if (project.startDate && project.endDate) {
+                        const start = new Date(project.startDate);
+                        const end = new Date(project.endDate);
+                        let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+                        let years = Math.floor(months / 12);
+                        months = months % 12;
+                        let durationParts = [];
+                        if (years > 0) durationParts.push(`${years} year${years > 1 ? 's' : ''}`);
+                        if (months > 0) durationParts.push(`${months} month${months > 1 ? 's' : ''}`);
+                        duration = durationParts.length > 0 ? durationParts.join(', ') : 'Less than a month';
+                    } else if (project.duration) {
+                        duration = project.duration;
+                    }
+    
+                    // Get current user's email
+                    let currentUserEmail = '';
+                    if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                        currentUserEmail = firebase.auth().currentUser.email || '';
+                    }
+                    if (!currentUserEmail) {
+                        currentUserEmail = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || '';
+                    }
+                    
+                    // Check if current user is the team leader
+                    const isTeamLeader = project.leader && project.leader.toLowerCase().trim() === currentUserEmail.toLowerCase().trim();
+    
+                    // Build the detail view HTML
+                    detailContent.innerHTML = `
+                        <h2 style="margin-bottom: 24px; font-size: 24px;">${project.name ? project.name.trim() : 'Untitled Project'}</h2>
+                        
+                        <div style="display: flex; gap: 32px; flex-wrap: wrap; margin-bottom: 32px;">
+                            <div style="flex:1; min-width:220px;">
+                                <div style='font-weight: 500; margin-bottom: 16px; font-size: 18px;'>Project Details</div>
+                                <div style='margin-bottom: 12px;'><b>Description:</b> ${project.description || 'Not specified'}</div>
+                                <div style='margin-bottom: 12px;'><b>Type:</b> ${project.type || 'Not specified'}</div>
+                                <div style='margin-bottom: 12px;'><b>Duration:</b> ${duration}</div>
+                                <div style='margin-bottom: 12px;'><b>Start Date:</b> ${startDate}</div>
+                                <div style='margin-bottom: 12px;'><b>End Date:</b> ${endDate}</div>
+                            </div>
+                            <div style="flex:1; min-width:220px;">
+                                <div style='font-weight: 500; margin-bottom: 16px; font-size: 18px;'>Additional Information</div>
+                                <div style='margin-bottom: 12px;'><b>Location:</b> ${project.location || 'Not specified'}</div>
+                                <div style='margin-bottom: 12px;'><b>Team Leader:</b> ${project.leader || 'Not specified'}</div>
+                                <div style='margin-bottom: 12px;'><b>Status:</b> ${project.status || 'Not specified'}</div>
+                                <div style='margin-bottom: 12px;'><span id="projectDetailProgressLabel"><b>Progress:</b> ${project.progress || 0}%</span>
+                                    <div style="background: #eee; border-radius: 4px; height: 8px; width: 100%; margin-top: 4px;">
+                                        <div id="projectDetailProgressBar" style="background: #000; height: 8px; border-radius: 4px; width: ${project.progress || 0}%; transition: width 0.3s;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div style="background: #f8f9fa; padding: 24px; border-radius: 8px; margin-bottom: 32px;">
+                            <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1976d2;">Budget: <span id="pvBudgetValue">${project.budget ? '₱' + project.budget : 'Not specified'}</span></div>
+                            <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <input id="pvBudgetLessenInput" type="number" min="1" placeholder="Amount to lessen" style="padding: 10px 14px; font-size: 16px; border: 1.5px solid #1976d2; border-radius: 6px; width: 200px;">
+                                    <button id="pvBudgetLessenBtn" style="padding: 10px 22px; font-size: 16px; border: none; border-radius: 6px; background: #d32f2f; color: #fff; font-weight: 600; cursor: pointer;">Lessen Budget</button>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <input id="pvBudgetReasonInput" type="text" placeholder="Reason for deduction" style="padding: 10px 14px; font-size: 16px; border: 1.5px solid #1976d2; border-radius: 6px; flex-grow: 1;">
+                                </div>
+                                <span id="pvBudgetMsg" style="font-size: 16px;"></span>
+                            </div>
+                            <div id="pvBudgetReportSection">
+                                <div style="font-weight: 600; margin-bottom: 12px; color: #1976d2;">Budget Report</div>
+                                <div style="overflow-x: auto;">
+                                    <canvas id="pvBudgetLineChart" height="120"></canvas>
+                                </div>
+                                <button id="pvBudgetExportBtn" style="margin-top: 16px; padding: 8px 20px; font-size: 16px; border: 1.5px solid #1976d2; border-radius: 6px; background: #fff; color: #1976d2; font-weight: 600; cursor: pointer;">Export Report</button>
+                            </div>
+                        </div>
+    
+                        <div style="margin-bottom: 32px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <div style="font-weight: 500; font-size: 18px;">Team Members</div>
+                                ${localStorage.getItem('isAdmin') === 'true' ? `
+                                    <button onclick="showAddTeamMemberModal()" style="padding: 8px 16px; border-radius: 4px; border: 1px solid #1976d2; background: #fff; color: #1976d2; cursor: pointer; font-size: 14px;">Add Member</button>
+                                ` : ''}
+                            </div>
+                            <div id="pvTeamList" style="font-size: 16px;"></div>
+                        </div>
+    
+                        <div style="margin-bottom: 32px;">
+                            <div style="font-weight: 500; font-size: 18px; margin-bottom: 16px;">Files</div>
+                            <div style="margin-bottom: 16px;">
+                                <input type="file" id="pvFileInput" style="margin-right: 8px;">
+                                <button id="pvUploadBtn" style="padding: 8px 16px; border-radius: 4px; border: none; background: #1976d2; color: #fff; cursor: pointer;">Upload</button>
+                                <span id="pvUploadStatus" style="font-size: 14px; margin-left: 8px;"></span>
+                            </div>
+                            <div id="pvFilesList"></div>
+                        </div>
+
+                        ${localStorage.getItem('isAdmin') === 'true' ? `
+                        <div style="margin-bottom: 32px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <div style="font-weight: 500; font-size: 18px;">All Tasks</div>
+                                <button onclick="showAddTaskModal()" style="padding: 8px 16px; border-radius: 4px; border: 1px solid #1976d2; background: #fff; color: #1976d2; cursor: pointer; font-size: 14px;">Add Task</button>
+                            </div>
+                            <div id="pvTasksList" style="font-size: 16px;"></div>
+                        </div>
+                        ` : `
+                        <div style="margin-bottom: 32px;">
+                            <div style="font-weight: 500; font-size: 18px; margin-bottom: 16px;">Tasks Assigned to You</div>
+                            <div id="myTasksList" style="font-size: 16px;"></div>
+                        </div>
+                        `}
+
+                        <div style="margin-bottom: 32px;">
+                            <div style="font-weight: 500; font-size: 18px; margin-bottom: 16px;">Project Chat</div>
+                            <div id="pvChatMessages" style="max-height: 200px; overflow-y: auto; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 12px; margin-bottom: 12px;"></div>
+                            <div style="display: flex; gap: 8px;">
+                                <input id="pvChatInput" type="text" placeholder="Type a message..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                <button id="pvChatSendBtn" style="padding: 8px 16px; background: #1976d2; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Send</button>
+                            </div>
+                        </div>
+
+                        <!-- Add Project Done button section -->
+                        <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid #eee;">
+                            <div style="display: flex; justify-content: center;">
+                                <button id="projectDoneBtn" onclick="markProjectAsDone('${projectId}')" 
+                                        style="padding: 12px 32px; background: #000; color: white; border: none; border-radius: 6px; 
+                                               cursor: pointer; font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px;
+                                               transition: all 0.2s ease;">
+                                    <i class="fas fa-check-circle"></i>
+                                    Mark Project as Done
+                                </button>
+                            </div>
+                            <div id="projectDoneMsg" style="text-align: center; margin-top: 12px; font-size: 14px; color: #666;"></div>
+                        </div>
+                    `;
+    
+                    // Initialize all the functionality
+                    loadTeamMembers(projectId);
+                    showProjectFiles(projectId);
+                    loadBudgetLineChart(projectId);
+                    setupChat(projectId); // Add this line to initialize chat
+    
+                    // Set up budget lessen functionality
+                        const lessenBtn = document.getElementById('pvBudgetLessenBtn');
+                        const msg = document.getElementById('pvBudgetMsg');
+                        if (lessenBtn) {
+                            lessenBtn.onclick = function() {
+                                const input = document.getElementById('pvBudgetLessenInput');
+                                const reasonInput = document.getElementById('pvBudgetReasonInput');
+                                let lessenAmount = parseFloat(input.value);
+                                let reason = reasonInput.value.trim();
+                                let currentBudget = parseFloat(project.budget) || 0;
+
+                                if (isNaN(lessenAmount) || lessenAmount <= 0) {
+                                    msg.textContent = 'Enter a valid amount.';
+                                    msg.style.color = '#d32f2f';
+                                    return;
+                                }
+
+                                if (!reason) {
+                                    msg.textContent = 'Please provide a reason for the deduction.';
+                                    msg.style.color = '#d32f2f';
+                                    return;
+                                }
+
+                                if (currentBudget <= 0) {
+                                    msg.textContent = 'Budget is already zero.';
+                                    msg.style.color = '#d32f2f';
+                                    return;
+                                }
+
+                                let actualLessen = lessenAmount;
+                                if (lessenAmount > currentBudget) {
+                                    actualLessen = currentBudget;
+                                }
+
+                                const newBudget = Math.max(0, currentBudget - actualLessen);
+                                
+                                // Update in Firebase
+                                firebase.database().ref('projects/admin-user/' + projectId + '/budget').set(newBudget).then(() => {
+                                    document.getElementById('pvBudgetValue').textContent = '₱' + newBudget;
+                                    input.value = '';
+                                    reasonInput.value = '';
+                                    msg.textContent = `Budget lessened by ₱${actualLessen}.`;
+                                    msg.style.color = '#388e3c';
+                                    
+                                    // Add to budget history with reason
+                                    const now = Date.now();
+                                    firebase.database().ref('projects/admin-user/' + projectId + '/budgetHistory').push({
+                                        date: now,
+                                        value: newBudget,
+                                        deducted: actualLessen,
+                                        deductedBy: firebase.auth().currentUser?.email || localStorage.getItem('userEmail') || '',
+                                        purpose: reason
+                                    });
+                                    
+                                    // Refresh chart
+                                    loadBudgetLineChart(projectId);
+                                    // Update local project.budget for further deductions
+                                    project.budget = newBudget;
+                                });
+                            };
+                    }
+    
+                    // Set up file upload functionality
+                    document.getElementById('pvUploadBtn').onclick = function() {
+                        uploadProjectFile(projectId);
+                    };
+    
+                    // Set up export button
+                    document.getElementById('pvBudgetExportBtn').onclick = function() {
+                        exportBudgetReport(projectId);
+                    };
+    
+                    // Add this line after setting up other functionality
+                    if (localStorage.getItem('isAdmin') === 'true') {
+                        loadTasks(projectId);
+                    } else {
+                        let currentUserEmailForMyTasks = firebase.auth().currentUser?.email || localStorage.getItem('userEmail') || '';
+                        currentUserEmailForMyTasks = currentUserEmailForMyTasks.trim().toLowerCase();
+                        loadMyTasks(projectId, currentUserEmailForMyTasks);
+                    }
+
+                    // Listen for progress changes in real time
+                    firebase.database().ref('projects/admin-user/' + projectId + '/progress').on('value', (snapshot) => {
+                        const progress = snapshot.val() || 0;
+                        const progressBar = document.getElementById('projectDetailProgressBar');
+                        const progressLabel = document.getElementById('projectDetailProgressLabel');
+                        if (progressBar) progressBar.style.width = progress + '%';
+                        if (progressLabel) progressLabel.innerHTML = `<b>Progress:</b> ${progress}%`;
+                    });
+                });
+            }
+            // File upload logic
+            function uploadProjectFile(projectId) {
+                const fileInput = document.getElementById('pvFileInput');
+                const statusSpan = document.getElementById('pvUploadStatus');
+                const uploadBtn = document.getElementById('pvUploadBtn');
+                
+                if (!fileInput.files[0]) {
+                    statusSpan.textContent = 'Please select a file.';
+                    statusSpan.style.color = '#d32f2f';
+                    return;
+                }
+
+                const file = fileInput.files[0];
+                const maxSize = 900 * 1024; // 900KB limit for database storage
+
+                if (file.size > maxSize) {
+                    statusSpan.textContent = 'File size exceeds 900KB limit. Please use a smaller file.';
+                    statusSpan.style.color = '#d32f2f';
+                    return;
+                }
+
+                // Show loading state
+                statusSpan.textContent = 'Uploading...';
+                statusSpan.style.color = '#1976d2';
+                uploadBtn.disabled = true;
+                uploadBtn.style.opacity = '0.7';
+
+                // Convert file to base64
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    
+                    // Create file data object
+                    const fileData = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: base64Data,
+                        uploadedAt: Date.now(),
+                        uploadedBy: firebase.auth().currentUser?.email || localStorage.getItem('userEmail')
+                    };
+
+                    // Save directly to database
+                    firebase.database().ref(`projects/admin-user/${projectId}/files`).push(fileData)
+                        .then(() => {
+                            statusSpan.textContent = 'File uploaded successfully!';
+                            statusSpan.style.color = '#388e3c';
+                            fileInput.value = '';
+                            uploadBtn.disabled = false;
+                            uploadBtn.style.opacity = '1';
+                            showProjectFiles(projectId);
+                        })
+                        .catch((error) => {
+                            console.error('Database error:', error);
+                            statusSpan.textContent = 'Error saving file: ' + error.message;
+                            statusSpan.style.color = '#d32f2f';
+                            uploadBtn.disabled = false;
+                            uploadBtn.style.opacity = '1';
+                        });
+                };
+
+                reader.onerror = function(error) {
+                    console.error('File reading error:', error);
+                    statusSpan.textContent = 'Error reading file: ' + error.message;
+                    statusSpan.style.color = '#d32f2f';
+                    uploadBtn.disabled = false;
+                    uploadBtn.style.opacity = '1';
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            function showProjectFiles(projectId) {
+                const filesListDiv = document.getElementById('pvFilesList');
+                filesListDiv.innerHTML = '<div style="color: #666;">Loading files...</div>';
+
+                firebase.database().ref(`projects/admin-user/${projectId}/files`).once('value')
+                    .then((snapshot) => {
+                        if (!snapshot.exists()) {
+                            filesListDiv.innerHTML = '<div style="color: #666;">No files uploaded yet.</div>';
+                            return;
+                        }
+
+                        let html = '<div style="display: grid; gap: 12px;">';
+                        snapshot.forEach((fileSnap) => {
+                            const file = fileSnap.val();
+                            const fileSize = formatFileSize(file.size);
+                            const uploadDate = new Date(file.uploadedAt).toLocaleString();
+                            
+                            html += `
+                                <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; border: 1px solid #ddd;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                        <div style="font-weight: 600; font-size: 16px;">
+                                            <i class="fas ${getFileIcon(file.type)}"></i> ${file.name}
+                                        </div>
+                                        <a href="${file.data}" download="${file.name}" 
+                                           style="padding: 6px 12px; border-radius: 4px; border: 1px solid #1976d2; 
+                                                  background: #fff; color: #1976d2; text-decoration: none; 
+                                                  font-size: 14px; cursor: pointer;">
+                                            <i class="fas fa-download"></i> Download
+                                        </a>
+                                    </div>
+                                    <div style="color: #666; font-size: 14px;">
+                                        <div>Size: ${fileSize}</div>
+                                        <div>Uploaded by: ${file.uploadedBy || 'Unknown'}</div>
+                                        <div>Date: ${uploadDate}</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        filesListDiv.innerHTML = html;
+                    })
+                    .catch((error) => {
+                        console.error('Error loading files:', error);
+                        filesListDiv.innerHTML = '<div style="color: #d32f2f;">Error loading files. Please try again.</div>';
+                    });
+            }
+
+            function formatFileSize(bytes) {
+                if (!bytes) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            function getFileIcon(fileType) {
+                if (!fileType) return 'fa-file';
+                
+                const type = fileType.toLowerCase();
+                if (type.includes('image')) return 'fa-file-image';
+                if (type.includes('pdf')) return 'fa-file-pdf';
+                if (type.includes('word') || type.includes('doc')) return 'fa-file-word';
+                if (type.includes('excel') || type.includes('sheet')) return 'fa-file-excel';
+                if (type.includes('powerpoint') || type.includes('presentation')) return 'fa-file-powerpoint';
+                if (type.includes('zip') || type.includes('archive')) return 'fa-file-archive';
+                if (type.includes('text')) return 'fa-file-alt';
+                if (type.includes('video')) return 'fa-file-video';
+                if (type.includes('audio')) return 'fa-file-audio';
+                return 'fa-file';
+            }
+    
+            // Add new function to load tasks for team members
+            function loadMyTasks(projectId, userEmail) {
+                const tasksListDiv = document.getElementById('myTasksList');
+                if (!tasksListDiv) return;
+
+                // Use on() instead of once() for real-time updates
+                const tasksRef = firebase.database().ref('projects/admin-user/' + projectId + '/tasks');
+                tasksRef.on('value', snapshot => {
+                    if (!snapshot.exists()) {
+                        tasksListDiv.innerHTML = 'No tasks assigned to you.';
+                        return;
+                    }
+
+                    let html = '<div style="display: grid; gap: 12px;">';
+                    let hasTasks = false;
+
+                    snapshot.forEach(taskSnap => {
+                        const task = taskSnap.val();
+                        const assigneeEmail = (task.assignee || '').trim().toLowerCase();
+                        
+                        if (assigneeEmail === userEmail) {
+                            hasTasks = true;
+                            const dueDate = task.dueDate ? new Date(task.dueDate) : null;
+                            const isOverdue = dueDate && dueDate < new Date() && task.status !== 'completed';
+                            
+                            html += `
+                                <div class="task-item ${task.status === 'completed' ? 'completed' : ''}" 
+                                     data-task-id="${taskSnap.key}"
+                                     style="background: #f8f9fa; border-radius: 8px; padding: 16px; border: 1px solid #ddd; ${task.status === 'completed' ? 'opacity: 0.7; background-color: #f0f8f0;' : ''}">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                        <div style="font-weight: 600; font-size: 16px;">${task.title}</div>
+                                        <div class="task-status" style="font-size: 14px; color: #666;">
+                                            ${task.status === 'completed' ? 
+                                                '<span style="color: #388e3c;"><i class="fas fa-check-circle"></i> Completed</span>' : 
+                                                `<span style="color: ${isOverdue ? '#d32f2f' : '#666'}">Due: ${dueDate ? dueDate.toLocaleDateString() : 'No due date'}</span>`
+                                            }
+                                        </div>
+                                    </div>
+                                    <div style="color: #666; margin-bottom: 8px;">${task.description || 'No description provided'}</div>
+                                    <div class="task-actions" style="display: flex; justify-content: flex-end;">
+                                        ${task.status !== 'completed' ? `
+                                            <button onclick="updateTaskStatus('${projectId}', '${taskSnap.key}', 'completed')" 
+                                                    style="padding: 6px 12px; border-radius: 4px; border: 1px solid #388e3c; background: #fff; color: #388e3c; cursor: pointer; font-size: 14px; transition: all 0.2s ease;">
+                                                <i class="fas fa-check"></i> Mark as Done
+                                            </button>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    html += '</div>';
+                    tasksListDiv.innerHTML = hasTasks ? html : 'No tasks assigned to you.';
+
+                    // Add hover effect to all Mark as Done buttons
+                    const markAsDoneButtons = tasksListDiv.querySelectorAll('button');
+                    markAsDoneButtons.forEach(button => {
+                        button.addEventListener('mouseover', function() {
+                            this.style.background = '#388e3c';
+                            this.style.color = '#fff';
+                        });
+                        button.addEventListener('mouseout', function() {
+                            this.style.background = '#fff';
+                            this.style.color = '#388e3c';
+                        });
+                    });
+                });
+            }
+
+            // Add function to filter tasks
+            function filterTasks(filter) {
+                const buttons = document.querySelectorAll('.task-filter-btn');
+                buttons.forEach(btn => {
+                    if (btn.getAttribute('data-filter') === filter) {
+                        btn.style.background = '#1976d2';
+                        btn.style.color = '#fff';
+                        btn.style.border = '1px solid #1976d2';
+                    } else {
+                        btn.style.background = '#fff';
+                        btn.style.color = '#666';
+                        btn.style.border = '1px solid #ccc';
+                    }
+                });
+
+                const taskItems = document.querySelectorAll('.task-item');
+                taskItems.forEach(item => {
+                    const isCompleted = item.classList.contains('completed');
+                    if (filter === 'all' || 
+                        (filter === 'completed' && isCompleted) || 
+                        (filter === 'pending' && !isCompleted)) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+    
+            // Attach event listeners to VIEW buttons (after rendering)
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('view-project-btn')) {
+                    const projectId = e.target.getAttribute('data-project-id');
+                    openProjectViewModal(projectId);
+                }
+            });
+    
+            // Team Members Functions
+            function showAddTeamMemberModal() {
+              const modal = document.getElementById('addTeamMemberModal');
+              const select = document.getElementById('teamMemberSelect');
+              select.innerHTML = '<option value="">Select a team member...</option>';
+                const projectId = getCurrentProjectId() || document.getElementById('projectDetailView').getAttribute('data-project-id');
+                firebase.database().ref('projects/admin-user/' + projectId).once('value').then(projectSnap => {
+                    const project = projectSnap.val();
+                    const leaderEmail = project.leader ? project.leader.toLowerCase() : '';
+                    firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers').once('value')
+                        .then(teamSnapshot => {
+                            const existingMembers = new Set();
+                            teamSnapshot.forEach(memberSnap => {
+                                const member = memberSnap.val();
+                                if (member && member.email) {
+                                    existingMembers.add(member.email.toLowerCase());
+                                }
+                            });
+                            return firebase.database().ref('users').once('value').then(snapshot => {
+                snapshot.forEach(childSnap => {
+                  const user = childSnap.val();
+                                    if (
+                                        user && user.email &&
+                                        !existingMembers.has(user.email.toLowerCase()) &&
+                                        user.email.toLowerCase() !== leaderEmail
+                                    ) {
+                    const option = document.createElement('option');
+                    option.value = user.email;
+                    option.textContent = user.email + (user.name ? ' (' + user.name + ')' : '');
+                    select.appendChild(option);
+                  }
+                });
+              });
+                        });
+                });
+              modal.style.display = 'flex';
+            }
+    
+            function addTeamMember() {
+              const select = document.getElementById('teamMemberSelect');
+              const selectedEmail = select.value;
+              if (!selectedEmail) {
+                alert('Please select a team member');
+                return;
+              }
+                const projectId = getCurrentProjectId() || document.getElementById('projectDetailView').getAttribute('data-project-id');
+                firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers').once('value')
+                    .then(teamSnapshot => {
+                        let alreadyExists = false;
+                        teamSnapshot.forEach(memberSnap => {
+                            const member = memberSnap.val();
+                            if (member && member.email && member.email.toLowerCase() === selectedEmail.toLowerCase()) {
+                                alreadyExists = true;
+                            }
+                        });
+                        if (alreadyExists) {
+                            alert('This member is already in the team.');
+                            return;
+                        }
+                        return firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers').push({
+                email: selectedEmail,
+                addedAt: Date.now()
+              }).then(() => {
+                closeAddTeamMemberModal();
+                            loadTeamMembers(projectId);
+                            firebase.database().ref('users').orderByChild('email').equalTo(selectedEmail).once('value')
+                                .then(snapshot => {
+                                    if (snapshot.exists()) {
+                                        const userKey = Object.keys(snapshot.val())[0];
+                                        return firebase.database().ref('users/' + userKey + '/teamProjects').push({
+                                            projectId: projectId,
+                                            role: 'Team Member',
+                                            addedAt: Date.now()
+                                        });
+                                    }
+                                });
+                        });
+                    });
+            }
+    
+            function closeAddTeamMemberModal() {
+              document.getElementById('addTeamMemberModal').style.display = 'none';
+            }
+    
+            function removeTeamMember(projectId, memberId) {
+              // Get current user's email
+              let currentUserEmail = '';
+              if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                  currentUserEmail = firebase.auth().currentUser.email || '';
+              }
+              if (!currentUserEmail) {
+                  currentUserEmail = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || '';
+              }
+              // Check if current user is the team leader
+              firebase.database().ref('projects/admin-user/' + projectId).once('value')
+                  .then(snapshot => {
+                      const project = snapshot.val();
+                      const isTeamLeader = project.leader && project.leader.toLowerCase().trim() === currentUserEmail.toLowerCase().trim();
+                      if (!isTeamLeader) {
+                          alert('Only the team leader can remove team members.');
+                          return;
+                      }
+                      if (confirm('Are you sure you want to remove this team member?')) {
+                          // Get the member's email before removing
+                          return firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers/' + memberId).once('value')
+                              .then(memberSnapshot => {
+                                  const memberEmail = memberSnapshot.val().email;
+                                  // Remove from project's team members
+                                  return firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers/' + memberId).remove()
+                                      .then(() => {
+                                          // Also remove project reference from member's user data
+                                          return firebase.database().ref('users').orderByChild('email').equalTo(memberEmail).once('value')
+                                              .then(userSnapshot => {
+                                                  if (userSnapshot.exists()) {
+                                                      const userKey = Object.keys(userSnapshot.val())[0];
+                                                      return firebase.database().ref('users/' + userKey + '/teamProjects')
+                                                          .orderByChild('projectId')
+                                                          .equalTo(projectId)
+                                                          .once('value')
+                                                          .then(projectRefSnapshot => {
+                                                              if (projectRefSnapshot.exists()) {
+                                                                  const projectRefKey = Object.keys(projectRefSnapshot.val())[0];
+                                                                  return firebase.database().ref('users/' + userKey + '/teamProjects/' + projectRefKey).remove();
+                                                              }
+                                                          });
+                                                  }
+                                              });
+                                      });
+                              })
+                              .then(() => {
+                                  loadTeamMembers(projectId);
+                              });
+                      }
+                  });
+            }
+    
+            function loadTeamMembers(projectId) {
+                projectId = projectId || getCurrentProjectId() || document.getElementById('projectDetailView').getAttribute('data-project-id');
+              const teamListDiv = document.getElementById('pvTeamList');
+              teamListDiv.innerHTML = 'Loading team members...';
+              let currentUserEmail = '';
+              if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                  currentUserEmail = firebase.auth().currentUser.email || '';
+              }
+              if (!currentUserEmail) {
+                  currentUserEmail = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || '';
+              }
+              firebase.database().ref('projects/admin-user/' + projectId).once('value')
+                .then(snapshot => {
+                  const project = snapshot.val();
+                  const isTeamLeader = project.leader && project.leader.toLowerCase().trim() === currentUserEmail.toLowerCase().trim();
+                        const leaderEmail = project.leader ? project.leader.toLowerCase() : '';
+                  return firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers').once('value')
+                      .then(membersSnapshot => {
+                          if (!membersSnapshot.exists()) {
+                              teamListDiv.innerHTML = 'No team members yet.';
+                              return;
+                          }
+                                const uniqueEmails = new Set();
+                          let html = '<ul style="margin:0; padding-left:18px;">';
+                          membersSnapshot.forEach(memberSnap => {
+                            const member = memberSnap.val();
+                                    if (member && member.email && !uniqueEmails.has(member.email.toLowerCase())) {
+                                        uniqueEmails.add(member.email.toLowerCase());
+                            html += `
+                              <li style="margin-bottom:4px;">
+                                ${member.email}
+                                                ${isTeamLeader && member.email.toLowerCase() !== leaderEmail ? `
+                                                    <button onclick=\"removeTeamMember('${projectId}', '${memberSnap.key}')\" 
+                                                            style=\"margin-left:8px; padding:2px 8px; border-radius:4px; border:1px solid #d32f2f; background:#fff; color:#d32f2f; cursor:pointer; font-size:12px;\">
+                                        Remove
+                                    </button>
+                                ` : ''}
+                              </li>`;
+                                    }
+                          });
+                          html += '</ul>';
+                          teamListDiv.innerHTML = html;
+                      });
+                });
+            }
+    
+            // Add helper functions for chart and export
+            function loadBudgetLineChart(projectId) {
+                firebase.database().ref('projects/admin-user/' + projectId + '/budgetHistory').once('value').then(snapshot => {
+                    const data = snapshot.val() || {};
+                    const labels = [];
+                    const values = [];
+                    const reasons = [];
+                    
+                    Object.values(data).forEach(entry => {
+                        labels.push(new Date(entry.date).toLocaleDateString());
+                        values.push(entry.value);
+                        reasons.push(entry.reason || '');
+                    });
+                    
+                    // If no data, use current budget
+                    if (labels.length === 0) {
+                        firebase.database().ref('projects/admin-user/' + projectId + '/budget').once('value').then(budgetSnap => {
+                            labels.push(new Date().toLocaleDateString());
+                            values.push(budgetSnap.val() || 0);
+                            reasons.push('');
+                            renderBudgetChart(labels, values, reasons);
+                        });
+                    } else {
+                        renderBudgetChart(labels, values, reasons);
+                    }
+                });
+            }
+            let pvBudgetChartInstance = null;
+            function renderBudgetChart(labels, values, reasons) {
+                const ctx = document.getElementById('pvBudgetLineChart').getContext('2d');
+                if (pvBudgetChartInstance) pvBudgetChartInstance.destroy();
+                
+                pvBudgetChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Budget',
+                            data: values,
+                            borderColor: '#1976d2',
+                            backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                            fill: true,
+                            tension: 0.2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const index = context.dataIndex;
+                                        const value = context.raw;
+                                        const reason = reasons[index];
+                                        let label = `Budget: ₱${value}`;
+                                        if (reason) {
+                                            label += `\nReason: ${reason}`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: { y: { beginAtZero: true, precision: 0 } }
+                    }
+                });
+            }
+            function exportBudgetReport(projectId) {
+                // Fetch project name for filename
+                firebase.database().ref('projects/admin-user/' + projectId).once('value').then(projectSnap => {
+                    const project = projectSnap.val();
+                    const projectName = (project && project.name) ? project.name.replace(/[^a-zA-Z0-9-_]/g, '_') : 'Project';
+                    const today = new Date();
+                    const dateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+                    const filename = `${projectName}-budget-transactions-${dateStr}.csv`;
+                    
+                    firebase.database().ref('projects/admin-user/' + projectId + '/budgetHistory').once('value').then(snapshot => {
+                        const data = snapshot.val() || {};
+                        // New CSV header: Date,Type,Amount,Reason,Updated By
+                        let csv = 'Date,Type,Amount,Reason,Updated By\n';
+                        Object.values(data).forEach(entry => {
+                            const date = new Date(entry.date || entry.timestamp || entry.createdAt || Date.now());
+                            const formattedDate = date.toLocaleDateString();
+                            let type = '';
+                            let amount = '';
+                            let reason = '';
+                            let updatedBy = '';
+                            // Determine type and amount
+                            if (entry.operation === 'add' || entry.amount > 0) {
+                                type = 'Add';
+                                amount = entry.amount || entry.added || '';
+                            } else if (entry.operation === 'subtract' || entry.deducted > 0) {
+                                type = 'Lessen';
+                                amount = entry.deducted || entry.amount || '';
+                            } else if (entry.amount < 0) {
+                                type = 'Lessen';
+                                amount = Math.abs(entry.amount);
+                            }
+                            // Fallback for legacy entries
+                            if (!type && entry.deducted) {
+                                type = 'Lessen';
+                                amount = entry.deducted;
+                            }
+                            if (!type && entry.added) {
+                                type = 'Add';
+                                amount = entry.added;
+                            }
+                            reason = entry.purpose || entry.reason || '';
+                            updatedBy = entry.updatedBy || entry.deductedBy || '';
+                            // Only include if type and amount are present
+                            if (type && amount) {
+                                csv += `${formattedDate},${type},${amount},"${reason.replace(/"/g, '""')}","${updatedBy.replace(/"/g, '""')}"\n`;
+                            }
+                        });
+                        // Download CSV
+                        const blob = new Blob([csv], {type: 'text/csv'});
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+                });
+            }
+    
+            // Add these new functions for task management
+            function showAddTaskModal() {
+                const modal = document.getElementById('addTaskModal');
+                const select = document.getElementById('taskAssigneeSelect');
+                select.innerHTML = '<option value="">Select team member...</option>';
+                
+                // Get current project ID
+                const projectId = getCurrentProjectId() || document.getElementById('projectDetailView').getAttribute('data-project-id');
+                
+                // Fetch team members for this project
+                firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers').once('value').then(snapshot => {
+                    snapshot.forEach(memberSnap => {
+                        const member = memberSnap.val();
+                        if (member && member.email) {
+                            const option = document.createElement('option');
+                            option.value = member.email.trim().toLowerCase(); // Store normalized email
+                            option.textContent = member.email; // Display original email
+                            select.appendChild(option);
+                        }
+                    });
+                });
+                
+                modal.style.display = 'flex';
+            }
+    
+            function closeAddTaskModal() {
+                document.getElementById('addTaskModal').style.display = 'none';
+            }
+    
+            // Function to add a new task (from js/tasks.js)
+            function addTask() {
+                const title = document.getElementById('taskTitleInput').value;
+                const description = document.getElementById('taskDescriptionInput').value;
+                let assignee = document.getElementById('taskAssigneeSelect').value;
+                const dueDate = document.getElementById('taskDueDateInput').value;
+                
+                if (!title || !assignee || !dueDate) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                const projectId = getCurrentProjectId() || document.getElementById('projectDetailView').getAttribute('data-project-id');
+                assignee = assignee.trim().toLowerCase();
+
+                firebase.database().ref('projects/admin-user/' + projectId + '/tasks').push({
+                    title: title,
+                    description: description,
+                    assignee: assignee,
+                    dueDate: dueDate,
+                    status: 'pending',
+                    createdAt: Date.now()
+                }).then(() => {
+                    // Clear form fields
+                    document.getElementById('taskTitleInput').value = '';
+                    document.getElementById('taskDescriptionInput').value = '';
+                    document.getElementById('taskAssigneeSelect').value = '';
+                    document.getElementById('taskDueDateInput').value = '';
+                    // Close modal
+                    closeAddTaskModal();
+                    // Refresh the All Tasks list
+                    loadTasks(projectId);
+                }).catch(error => {
+                    console.error('Error adding task:', error);
+                    alert('Error adding task. Please try again.');
+                });
+            }
+    
+            function fetchAndLogTasks(projectId, currentUserEmail) {
+                firebase.database().ref('projects/admin-user/' + projectId + '/tasks').once('value').then(snapshot => {
+                    console.log('--- All tasks in Firebase for project', projectId, '---');
+                    snapshot.forEach(taskSnap => {
+                        const task = taskSnap.val();
+                        console.log('Task:', task, 'Assignee:', (task.assignee || '').trim().toLowerCase(), 'CurrentUser:', currentUserEmail);
+                    });
+                });
+            }
+    
+            function loadTasks(projectId) {
+    projectId = projectId || getCurrentProjectId() || document.getElementById('projectDetailView').getAttribute('data-project-id');
+    const tasksListDiv = document.getElementById('pvTasksList');
+    if (!tasksListDiv) {
+        console.error('pvTasksList div not found!');
+        return;
+    }
+    tasksListDiv.innerHTML = '';
+    // Get current user's email
+    let currentUserEmail = '';
+    if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+        currentUserEmail = firebase.auth().currentUser.email || '';
+    }
+    if (!currentUserEmail) {
+        currentUserEmail = localStorage.getItem('tempEmail') || localStorage.getItem('userEmail') || '';
+    }
+    currentUserEmail = currentUserEmail.trim().toLowerCase();
+
+    // Remove any previous listeners to avoid duplicates
+    const tasksRef = firebase.database().ref('projects/admin-user/' + projectId + '/tasks');
+    tasksRef.off();
+
+    // Check if user is team leader
+    firebase.database().ref('projects/admin-user/' + projectId).once('value').then(projectSnap => {
+        const project = projectSnap.val();
+        const isTeamLeader = project && project.leader && project.leader.trim().toLowerCase() === currentUserEmail;
+
+        // Real-time listener for tasks
+        tasksRef.on('value', snapshot => {
+            if (!snapshot.exists()) {
+                tasksListDiv.innerHTML = 'No tasks yet.';
+                return;
+            }
+
+            let html = '<div style="display: grid; gap: 16px;">';
+            let hasTasks = false;
+
+            snapshot.forEach(taskSnap => {
+                const task = taskSnap.val();
+                const assigneeEmail = (task.assignee || '').trim().toLowerCase();
+                const dueDate = task.dueDate ? new Date(task.dueDate) : null;
+                const isOverdue = dueDate && dueDate < new Date() && task.status !== 'completed';
+                const formattedDueDate = dueDate ? dueDate.toLocaleDateString() : 'No due date';
+
+                // Team leader sees ALL tasks, team member sees only their tasks
+                if (isTeamLeader || assigneeEmail === currentUserEmail) {
+                    hasTasks = true;
+                    html += `
+                        <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; border: 1px solid #ddd; 
+                            ${task.status === 'completed' ? 'opacity: 0.7; background-color: #f0f8f0;' : ''}">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div style="font-weight: 600; font-size: 16px;">${task.title || 'Untitled Task'}</div>
+                                <div style="font-size: 14px; color: #666;">
+                                    ${task.status === 'completed' ? 
+                                        '<span style="color: #388e3c;"><i class="fas fa-check-circle"></i> Completed</span>' : 
+                                        `<span style="color: ${isOverdue ? '#d32f2f' : '#666'}">Due: ${formattedDueDate}</span>`
+                                    }
+                                </div>
+                            </div>
+                            <div style="color: #666; margin-bottom: 8px;">${task.description || 'No description provided'}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 14px; color: #666;">
+                                    Assigned to: ${assigneeEmail}
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    ${isTeamLeader ? `
+                                        <button onclick="deleteTask('${projectId}', '${taskSnap.key}')" 
+                                                style="padding: 6px 12px; border-radius: 4px; border: none; background: #d32f2f; color: #fff; cursor: pointer; font-size: 14px;">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    ` : ''}
+                                    ${assigneeEmail === currentUserEmail && task.status !== 'completed' ? `
+                                        <button onclick="updateTaskStatus('${projectId}', '${taskSnap.key}', 'completed')" 
+                                                style="padding: 6px 12px; border-radius: 4px; border: 1px solid #388e3c; background: #fff; color: #388e3c; cursor: pointer; font-size: 14px;">
+                                            <i class="fas fa-check"></i> Mark as Done
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += '</div>';
+            tasksListDiv.innerHTML = hasTasks ? html : 'No tasks yet.';
+        });
+    });
+}
+    
+            function deleteTask(projectId, taskId) {
+                if (confirm('Are you sure you want to delete this task?')) {
+                    firebase.database().ref('projects/admin-user/' + projectId + '/tasks/' + taskId).remove()
+                        .then(() => {
+                            loadTasks(projectId);
+                            updateProjectProgress(projectId); // <-- Ensure this is present
+                        });
+                }
+            }
+    
+            function updateTaskStatus(projectId, taskId, newStatus) {
+    let currentUserEmail = firebase.auth().currentUser?.email || localStorage.getItem('userEmail') || '';
+    currentUserEmail = currentUserEmail.trim().toLowerCase();
+
+    // First check if user is authorized to update this task
+    firebase.database().ref(`projects/admin-user/${projectId}/tasks/${taskId}`).once('value').then(snapshot => {
+        const task = snapshot.val();
+        const assigneeEmail = (task.assignee || '').trim().toLowerCase();
+
+        // Check if user is either the assignee or team leader
+        firebase.database().ref(`projects/admin-user/${projectId}`).once('value').then(projectSnap => {
+            const project = projectSnap.val();
+            const isTeamLeader = project && project.leader && project.leader.trim().toLowerCase() === currentUserEmail;
+
+            if (assigneeEmail === currentUserEmail || isTeamLeader) {
+                // Update the task status in Firebase
+                firebase.database().ref(`projects/admin-user/${projectId}/tasks/${taskId}`).update({
+                    status: 'completed',
+                    completedAt: Date.now()
+                }).then(() => {
+                    updateProjectProgress(projectId); // <-- Ensure this is present
+                }).catch(error => {
+                    console.error('Error updating task status:', error);
+                    alert('Failed to update task status. Please try again.');
+                });
+            } else {
+                alert('You are not authorized to update this task.');
+            }
+        });
+    });
+}
+
+// Helper to check if user is team leader
+function isTeamLeader(projectId) {
+    return firebase.database().ref(`projects/admin-user/${projectId}`).once('value').then(snap => {
+        const data = snap.val();
+        return data?.leader?.trim().toLowerCase() === (firebase.auth().currentUser?.email || localStorage.getItem('userEmail')).trim().toLowerCase();
+    });
+}
+
+
+
+    function loadUserTasks() {
+        let currentUserEmail = firebase.auth().currentUser?.email || localStorage.getItem('userEmail') || '';
+        currentUserEmail = currentUserEmail.trim().toLowerCase();
+
+        if (!currentUserEmail) return;
+
+        // Use on() instead of once() for real-time updates
+        firebase.database().ref('projects/admin-user').on('value', snapshot => {
+            const tasks = [];
+            
+            if (snapshot.exists()) {
+                snapshot.forEach(projectSnapshot => {
+                    const projectId = projectSnapshot.key;
+                    const projectData = projectSnapshot.val();
+                    
+                    // Check if user is a team member (not leader)
+                    const isTeamMember = projectData.teamMembers && Object.values(projectData.teamMembers).some(member => 
+                        member.email && member.email.toLowerCase().trim() === currentUserEmail
+                    );
+                    
+                    if (isTeamMember) {
+                        // Get tasks for this project
+                        const projectTasks = projectData.tasks || {};
+                        Object.entries(projectTasks).forEach(([taskId, task]) => {
+                            const assigneeEmail = (task.assignee || '').trim().toLowerCase();
+                            
+                            if (assigneeEmail === currentUserEmail) {
+                                tasks.push({
+                                    ...task,
+                                    projectId: projectId,
+                                    projectName: projectData.name || 'Untitled Project',
+                                    taskId: taskId
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // Display tasks in dashboard
+            displayUserTasks(tasks);
+        });
+    }
+    
+    function displayUserTasks(tasks) {
+        console.log('displayUserTasks called with', tasks.length, 'tasks');
+    const activitiesDiv = document.getElementById('dashboard-activities');
+    if (tasks.length === 0) {
+        activitiesDiv.innerHTML = 'No tasks assigned to you.';
+        return;
+    }
+
+    // Sort by due date (soonest first)
+    tasks.sort((a, b) => {
+        const dateA = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
+        const dateB = b.dueDate ? new Date(b.dueDate).getTime() : Infinity;
+        return dateA - dateB;
+    });
+
+    // Show only two tasks initially
+    let showAll = !!window._showAllActivities;
+    const visibleTasks = showAll ? tasks : tasks.slice(0, 2);
+
+    let html = visibleTasks.map(task => {
+        const dueDate = task.dueDate ? new Date(task.dueDate) : null;
+        const isOverdue = dueDate && dueDate < new Date() && task.status !== 'completed';
+        return `
+            <div class="task-item ${task.status === 'completed' ? 'completed' : ''}" 
+                 data-task-id="${task.taskId}"
+                 style="margin-bottom: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px; ${task.status === 'completed' ? 'opacity: 0.7; background-color: #f0f8f0;' : ''}">
+                <div style="font-weight: 600; margin-bottom: 4px;">${task.title || 'Untitled Task'}</div>
+                <div style="font-size: 14px; color: #666; margin-bottom: 4px;">
+                    Project: ${task.projectName}
+                </div>
+                <div style="font-size: 14px; color: #666; margin-bottom: 4px;">
+                    ${task.description || 'No description'}
+                </div>
+                <div style="font-size: 14px; color: ${isOverdue ? '#d32f2f' : '#666'};">
+                    ${dueDate ? `Due: ${dueDate.toLocaleDateString()}` : 'No due date'}
+                </div>
+                ${task.status === 'completed' ? `
+                    <div style="color: #388e3c; margin-top: 4px; font-size: 14px;">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </div>
+                ` : `
+                    <button onclick="updateTaskStatus('${task.projectId}', '${task.taskId}', 'completed')"
+                            style="margin-top: 8px; padding: 4px 12px; border-radius: 4px; border: 1px solid #388e3c; background: #fff; color: #388e3c; cursor: pointer; font-size: 14px; transition: all 0.2s ease;">
+                        Mark as Done
+                    </button>
+                `}
+            </div>
+        `;
+    }).join('');
+
+    // Add See more/See less button if there are more than 2 tasks
+    if (tasks.length > 2) {
+        html += `
+            <button onclick="toggleShowAllActivities()" 
+                    style="width: 100%; padding: 8px; border: 1px solid #ddd; background: #fff; color: #666; cursor: pointer; border-radius: 4px; margin-top: 8px;">
+                ${showAll ? 'Show Less' : 'Show More'}
+            </button>
+        `;
+    }
+
+    activitiesDiv.innerHTML = html;
+}
+    
+            // Helper: Store and retrieve current projectId for detail view
+            function setCurrentProjectId(projectId) {
+                localStorage.setItem('currentProjectId', projectId);
+            }
+            function getCurrentProjectId() {
+                return localStorage.getItem('currentProjectId');
+            }
+    
+            // On page load, if project detail view is open, reload its data
+            window.addEventListener('DOMContentLoaded', function() {
+                const projectDetailView = document.getElementById('projectDetailView');
+                if (projectDetailView && projectDetailView.style.display !== 'none') {
+                    const projectId = getCurrentProjectId();
+                    if (projectId) {
+                        openProjectViewModal(projectId);
+                    }
+                }
+            });
+    
+            // Add JS for real-time chat loading and sending:
+            function loadProjectChatRealtime(projectId) {
+                const chatList = document.getElementById('pvChatMessages');
+                if (!chatList) return;
+
+                // Clear any existing listeners
+                const chatRef = firebase.database().ref(`projects/admin-user/${projectId}/messages`);
+                chatRef.off();
+
+                // Listen for new messages
+                chatRef.on('value', (snapshot) => {
+                    const messages = snapshot.val() || {};
+                    if (Object.keys(messages).length === 0) {
+                        chatList.innerHTML = '<div style="color: #666; text-align: center; padding: 20px;">No messages yet. Start the conversation!</div>';
+                        return;
+                    }
+
+                    // Convert messages object to array and sort by timestamp
+                    const messagesArray = Object.entries(messages).map(([id, msg]) => ({
+                        id,
+                        ...msg
+                    })).sort((a, b) => a.timestamp - b.timestamp);
+
+                    // Generate HTML for messages
+                    const html = messagesArray.map(msg => {
+                        const isCurrentUser = msg.sender === (firebase.auth().currentUser?.email || localStorage.getItem('userEmail'));
+                        const messageTime = new Date(msg.timestamp).toLocaleTimeString();
+                        const messageDate = new Date(msg.timestamp).toLocaleDateString();
+                        
+                        return `
+                            <div style="margin-bottom: 16px; display: flex; flex-direction: ${isCurrentUser ? 'row-reverse' : 'row'};">
+                                <div style="max-width: 70%;">
+                                    <div style="background: ${isCurrentUser ? '#1976d2' : '#f0f0f0'}; 
+                                                color: ${isCurrentUser ? '#fff' : '#333'}; 
+                                                padding: 12px 16px; 
+                                                border-radius: 12px; 
+                                                margin-bottom: 4px;
+                                                word-wrap: break-word;">
+                                        ${msg.text}
+                                    </div>
+                                    <div style="font-size: 12px; color: #666; text-align: ${isCurrentUser ? 'right' : 'left'};">
+                                        <span style="font-weight: 500;">${msg.sender}</span>
+                                        <span style="margin: 0 4px;">•</span>
+                                        <span>${messageDate} ${messageTime}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    chatList.innerHTML = html;
+                    chatList.scrollTop = chatList.scrollHeight;
+                });
+            }
+
+            function setupChat(projectId) {
+                const chatInput = document.getElementById('pvChatInput');
+                const chatSendBtn = document.getElementById('pvChatSendBtn');
+                const chatMessages = document.getElementById('pvChatMessages');
+
+                if (!chatInput || !chatSendBtn || !chatMessages) {
+                    console.error('Chat elements not found');
+                    return;
+                }
+
+                // Style the chat container
+                chatMessages.style.maxHeight = '400px';
+                chatMessages.style.overflowY = 'auto';
+                chatMessages.style.padding = '16px';
+                chatMessages.style.backgroundColor = '#fff';
+                chatMessages.style.borderRadius = '8px';
+                chatMessages.style.border = '1px solid #ddd';
+
+                // Style the input container
+                const inputContainer = chatInput.parentElement;
+                inputContainer.style.display = 'flex';
+                inputContainer.style.gap = '8px';
+                inputContainer.style.marginTop = '16px';
+
+                // Style the input
+                chatInput.style.flex = '1';
+                chatInput.style.padding = '12px';
+                chatInput.style.border = '1px solid #ddd';
+                chatInput.style.borderRadius = '8px';
+                chatInput.style.fontSize = '14px';
+
+                // Style the send button
+                chatSendBtn.style.padding = '12px 24px';
+                chatSendBtn.style.backgroundColor = '#1976d2';
+                chatSendBtn.style.color = '#fff';
+                chatSendBtn.style.border = 'none';
+                chatSendBtn.style.borderRadius = '8px';
+                chatSendBtn.style.cursor = 'pointer';
+                chatSendBtn.style.fontWeight = '500';
+
+                // Add hover effect to send button
+                chatSendBtn.onmouseover = () => chatSendBtn.style.backgroundColor = '#1565c0';
+                chatSendBtn.onmouseout = () => chatSendBtn.style.backgroundColor = '#1976d2';
+
+                // Remove any existing event listeners
+                const newSendBtn = chatSendBtn.cloneNode(true);
+                chatSendBtn.parentNode.replaceChild(newSendBtn, chatSendBtn);
+                const newChatInput = chatInput.cloneNode(true);
+                chatInput.parentNode.replaceChild(newChatInput, chatInput);
+
+                // Add event listeners
+                newSendBtn.addEventListener('click', () => {
+                    const text = newChatInput.value.trim();
+                    if (text) {
+                        sendProjectChatMessage(projectId);
+                    }
+                });
+
+                newChatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const text = newChatInput.value.trim();
+                        if (text) {
+                            sendProjectChatMessage(projectId);
+                        }
+                    }
+                });
+
+                // Load existing messages
+                loadProjectChatRealtime(projectId);
+            }
+
+            function sendProjectChatMessage(projectId) {
+                const input = document.getElementById('pvChatInput');
+                const text = input.value.trim();
+                
+                if (!text) return;
+
+                // Get current user info
+                const currentUser = firebase.auth().currentUser;
+                const userEmail = currentUser?.email || localStorage.getItem('userEmail');
+                const userName = document.getElementById('sidebarUserName').textContent || userEmail;
+
+                // Create message object
+                const messageData = {
+                    text: text,
+                    sender: userName,
+                    senderEmail: userEmail,
+                    timestamp: Date.now()
+                };
+
+                // Save message to database
+                firebase.database().ref(`projects/admin-user/${projectId}/messages`).push(messageData)
+                    .then(() => {
+                        input.value = '';
+                    })
+                    .catch(error => {
+                        console.error('Error sending message:', error);
+                        alert('Failed to send message. Please try again.');
+                    });
+            }
+
+            // ... rest of the existing code ...
+    
+    
+        </script>
+
+
+<!-- Add Task Modal -->
+    
+    
+        </script>
+
+
+<!-- Add Task Modal -->
+<div id="addTaskModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:3001; justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:32px 24px; border-radius:10px; min-width:340px; max-width:90vw; box-shadow:0 2px 16px rgba(0,0,0,0.15); display:flex; flex-direction:column; align-items:stretch; position:relative;">
+        <button onclick="closeProjectViewModal()" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:22px; cursor:pointer;">&times;</button>
+        <h3 id="pvName" style="margin-bottom:8px;"></h3>
+        <div id="pvDetails" style="font-size:15px; color:#444; margin-bottom:16px;"></div>
+        
+        <!-- Team Members Section -->
+        <div id="pvTeamSection" style="margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label style="font-weight:500;">Team Members:</label>
+            <button id="addMemberBtn" onclick="showAddTeamMemberModal()" style="padding:4px 12px; border-radius:4px; border:1px solid #1976d2; background:#fff; color:#1976d2; cursor:pointer; font-size:13px; display:none;">Add Member</button>
+          </div>
+          <div id="pvTeamList" style="font-size:14px; color:#444;"></div>
+        </div>
+
+        <div id="pvFileSection" style="margin-bottom:16px;">
+          <label style="font-weight:500;">Upload File:</label><br>
+          <input type="file" id="pvFileInput" />
+          <button id="pvUploadBtn" style="margin-left:8px; padding:6px 14px; border-radius:4px; border:none; background:#1976d2; color:#fff; cursor:pointer;">Upload</button>
+          <span id="pvUploadStatus" style="font-size:13px; margin-left:8px;"></span>
+        </div>
+        <div id="pvFilesList" style="margin-bottom:8px;"></div>
+      </div>
+    </div>
+
+    <script src="js/tasks.js"></script>
+    <script src="js/archive.js"></script>
+
+    <!-- Archive Project View Modal -->
+    <div id="archiveProjectViewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(4px);">
+        <div style="position: relative; background: #fff; width: 90%; max-width: 800px; margin: 40px auto; border-radius: 12px; padding: 32px; max-height: 90vh; overflow-y: auto; box-shadow: 0 4px 24px rgba(0,0,0,0.15);">
+            <button onclick="closeArchiveProjectViewModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s ease;">×</button>
+            <h2 style="margin-bottom: 24px; font-size: 24px; font-weight: 600; color: #333;">Project Details</h2>
+            <div id="archiveProjectViewContent" style="font-size: 15px; line-height: 1.6;"></div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(4px);">
+        <div style="position: relative; background: #fff; width: 90%; max-width: 500px; margin: 40px auto; border-radius: 12px; padding: 0; box-shadow: 0 4px 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; height: 90vh; max-height: 600px;">
+            <button onclick="closeAddTaskModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s ease; z-index: 2;">×</button>
+            <div style="flex: 1 1 auto; overflow-y: auto; padding: 32px; display: flex; flex-direction: column;">
+                <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: 600; color: #333;">Add New Task</h3>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Task Title</label>
+                    <input type="text" id="taskTitleInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; transition: all 0.2s ease;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Description</label>
+                    <textarea id="taskDescriptionInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; min-height: 120px; font-size: 15px; resize: vertical; transition: all 0.2s ease;"></textarea>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Assigned To</label>
+                    <select id="taskAssigneeSelect" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; background-color: #fff; transition: all 0.2s ease;">
+                        <option value="">Select team member...</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Priority</label>
+                    <select id="taskPrioritySelect" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; background-color: #fff; transition: all 0.2s ease;">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Due Date</label>
+                    <input type="date" id="taskDueDateInput" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; transition: all 0.2s ease;">
+                </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; padding: 24px 32px; border-top: 1px solid #eee; background: #fafbfc; flex-shrink: 0;">
+                <button onclick="closeAddTaskModal()" style="padding: 12px 24px; border-radius: 8px; border: 1px solid #ddd; background: #fff; color: #666; cursor: pointer; font-size: 15px; font-weight: 500; transition: all 0.2s ease;">Cancel</button>
+                <button onclick="addTask()" style="padding: 12px 24px; border-radius: 8px; border: none; background: #1976d2; color: #fff; cursor: pointer; font-size: 15px; font-weight: 500; transition: all 0.2s ease;">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Team Member Modal -->
+    <div id="addTeamMemberModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(4px);">
+        <div style="position: relative; background: #fff; width: 90%; max-width: 400px; margin: 40px auto; border-radius: 12px; padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.15);">
+            <button onclick="closeAddTeamMemberModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s ease;">×</button>
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: 600; color: #333;">Add Team Member</h3>
+            <div style="margin-bottom: 24px;">
+                <select id="teamMemberSelect" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; background-color: #fff; transition: all 0.2s ease;">
+                    <option value="">Select a team member...</option>
+                </select>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                <button onclick="closeAddTeamMemberModal()" style="padding: 12px 24px; border-radius: 8px; border: 1px solid #ddd; background: #fff; color: #666; cursor: pointer; font-size: 15px; font-weight: 500; transition: all 0.2s ease;">Cancel</button>
+                <button onclick="addTeamMember()" style="padding: 12px 24px; border-radius: 8px; border: none; background: #1976d2; color: #fff; cursor: pointer; font-size: 15px; font-weight: 500; transition: all 0.2s ease;">Add Member</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    /* Add hover effects for buttons */
+    button:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    /* Add hover effects for inputs */
+    input:hover, select:hover, textarea:hover {
+        border-color: #1976d2;
+    }
+
+    /* Add focus effects for inputs */
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #1976d2;
+        box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+    }
+
+    /* Add hover effect for close buttons */
+    button[onclick*="close"]:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        color: #333;
+    }
+
+    /* Add scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #666;
+    }
+    </style>
+
+    <script>
+    // ... existing code ...
+    // Show Add Member button only for admin
+    window.addEventListener('DOMContentLoaded', function() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      const addMemberBtn = document.getElementById('addMemberBtn');
+      if (addMemberBtn) {
+        addMemberBtn.style.display = isAdmin ? '' : 'none';
+      }
+    });
+    // ... existing code ...
+    // In showAddTaskModal, ensure the team leader can assign tasks to herself
+    function showAddTaskModal() {
+      const modal = document.getElementById('addTaskModal');
+      const select = document.getElementById('taskAssigneeSelect');
+      select.innerHTML = '<option value="">Select team member...</option>';
+      const projectId = getCurrentProjectId() || document.getElementById('projectDetailView').getAttribute('data-project-id');
+      firebase.database().ref('projects/admin-user/' + projectId).once('value').then(projectSnap => {
+        const project = projectSnap.val();
+        const leaderEmail = project.leader ? project.leader.trim().toLowerCase() : '';
+        // Add leader as an option
+        if (leaderEmail) {
+          const option = document.createElement('option');
+          option.value = leaderEmail;
+          option.textContent = project.leader + ' (Team Leader)';
+          select.appendChild(option);
+        }
+        // Add team members
+        firebase.database().ref('projects/admin-user/' + projectId + '/teamMembers').once('value').then(snapshot => {
+          snapshot.forEach(memberSnap => {
+            const member = memberSnap.val();
+            if (member && member.email) {
+              const email = member.email.trim().toLowerCase();
+              // Avoid duplicate if leader is also a member
+              if (email !== leaderEmail) {
+                const option = document.createElement('option');
+                option.value = email;
+                option.textContent = member.email;
+                select.appendChild(option);
+              }
+            }
+          });
+        });
+      });
+      modal.style.display = 'flex';
+    }
+    // ... existing code ...
+    </script>
+
+    <!-- Add event listener for name change -->
+    <script>
+        document.getElementById('saveNameBtn').addEventListener('click', function() {
+            const nameInput = document.getElementById('displayNameInput');
+            const nameSpinner = document.getElementById('saveNameSpinner');
+            const nameMsg = document.getElementById('saveNameMsg');
+            const newName = nameInput.value.trim();
+            
+            if (!newName) {
+                nameMsg.textContent = 'Please enter a name';
+                nameMsg.style.color = '#d32f2f';
+                return;
+            }
+            
+            nameSpinner.style.display = 'inline-block';
+            nameMsg.textContent = '';
+            
+            // Get current user
+            const user = firebase.auth().currentUser;
+            if (user) {
+                // Update in Firebase Auth
+                user.updateProfile({
+                    displayName: newName
+                }).then(() => {
+                    // Update in Firebase Database
+                    return firebase.database().ref('users/' + user.uid).update({
+                        name: newName
+                    });
+                }).then(() => {
+                    // Update in localStorage
+                    localStorage.setItem('userName', newName);
+                    
+                    // Update UI
+                    document.getElementById('sidebarUserName').textContent = newName;
+                    nameMsg.textContent = 'Name updated successfully';
+                    nameMsg.style.color = '#388e3c';
+                    nameSpinner.style.display = 'none';
+                }).catch((error) => {
+                    console.error('Error updating name:', error);
+                    nameMsg.textContent = 'Error updating name';
+                    nameMsg.style.color = '#d32f2f';
+                    nameSpinner.style.display = 'none';
+                });
+            } else {
+                // If no Firebase user, just update localStorage
+                localStorage.setItem('userName', newName);
+                document.getElementById('sidebarUserName').textContent = newName;
+                nameMsg.textContent = 'Name updated successfully';
+                nameMsg.style.color = '#388e3c';
+                nameSpinner.style.display = 'none';
+            }
+        });
+
+        // Load current name when settings are opened
+        document.getElementById('settingsBtn').addEventListener('click', function() {
+            const nameInput = document.getElementById('displayNameInput');
+            const currentName = localStorage.getItem('userName') || '';
+            nameInput.value = currentName;
+        });
+    </script>
+
+    </body>
+    </html>
+    

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>QUILL - Authentication</title>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="text-align: center;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Logging in...</div>
+    </div>
+  </div>
+
+  <!-- Admin Login Section (Hidden by default) -->
+  <div class="container" id="adminSection" style="display:none;">
+    <div class="logo">
+      <img src="images/logopms.png" alt="QUILL">
+      QUILL
+    </div>
+    <div class="subtitle">ADMIN PORTAL</div>
+    
+    <div class="input-label">Username</div>
+    <input type="text" id="adminUsername" placeholder="Enter admin username" />
+    
+    <div class="input-label">Password</div>
+    <input type="password" id="adminPassword" placeholder="Enter admin password" />
+    
+    <button id="adminLoginBtn" onclick="adminLogin()">Login as Admin</button>
+    <button class="back-button" onclick="toggleAdminLogin()"><i class="fas fa-arrow-left"></i> Back</button>
+    
+    <div class="error-message" id="adminAlertBox"></div>
+  </div>
+
+  <!-- Email Login Section -->
+  <div class="container" id="emailSection">
+    <div class="logo">
+      <img src="images/logopms.png" alt="QUILL">
+      QUILL
+    </div>
+    <div class="subtitle">CREATE. ORGANIZE. WORK.</div>
+    
+    <div class="input-label">Email</div>
+    <input type="email" id="emailInput" placeholder="" />
+    
+    <button id="emailContinueBtn" onclick="checkAndSendOTP()">Continue with Email</button>
+    
+    <div class="divider">OR CONTINUE WITH</div>
+    
+    <button class="secondary" onclick="googleLogin()">Google</button>
+    
+    <button class="admin-toggle" onclick="toggleAdminLogin()">
+      <i class="fas fa-user-shield"></i>
+    </button>
+    <div class="admin-label">Admin Login</div>
+    
+    <div class="error-message" id="alertBox"></div>
+  </div>
+
+  <!-- Phone Number Section (Hidden by default) -->
+  <div class="container" id="phoneSection" style="display:none;">
+    <div class="logo">
+      <img src="images/logopms.png" alt="QUILL">
+      QUILL
+    </div>
+    <div class="subtitle">CREATE. ORGANIZE. WORK.</div>
+    
+    <div class="input-label">Number</div>
+    <input type="tel" id="phoneInput" placeholder="" />
+    
+    <button id="phoneContinueBtn" onclick="sendPhoneOTP()">Continue with Number</button>
+    
+    <div class="divider">OR CONTINUE WITH</div>
+    
+    <button class="secondary" onclick="googleLogin()">Google</button>
+    
+    <button class="admin-toggle" onclick="toggleAdminLogin()">
+      <i class="fas fa-user-shield"></i>
+    </button>
+    <div class="admin-label">Admin Login</div>
+    
+    <div class="error-message" id="alertBoxPhone"></div>
+  </div>
+
+  <!-- OTP Verification Section -->
+  <div class="container" id="otpSection" style="display:none;">
+    <div class="logo">
+      <img src="images/logopms.png" alt="QUILL">
+      QUILL
+    </div>
+    <div class="subtitle">CREATE. ORGANIZE. WORK.</div>
+    
+    <div class="code-label">Enter Code</div>
+    <div class="otp-box">
+      <input type="text" maxlength="1" oninput="moveNext(this, 0)">
+      <input type="text" maxlength="1" oninput="moveNext(this, 1)">
+      <input type="text" maxlength="1" oninput="moveNext(this, 2)">
+      <input type="text" maxlength="1" oninput="moveNext(this, 3)">
+    </div>
+    
+    <button id="otpContinueBtn" onclick="verifyOTP()">Continue</button>
+    <button class="secondary" onclick="goBack()">Back</button>
+    
+    <div class="error-message" id="alertBoxOtp"></div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  
+  <!-- Add Font Awesome for the admin icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/script.js"></script>
+</body>
+</html>

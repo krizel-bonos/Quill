@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quill - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .splash-container {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease forwards 0.5s;
+        }
+        
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            max-width: 350px; 
+            height: auto;
+        }
+        
+        .loading-bar {
+            width: 350px;
+            height: 2px;
+            background-color: #f0f0f0;
+            margin: 30px auto;
+            position: absolute;
+            overflow: hidden;
+            bottom: 10%;
+        }
+        
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: #333;
+            animation: loading 2.5s ease forwards;
+            z-index: 1;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes loading {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-container">
+        <div class="logo-container">
+            <img src="images/logopms.png" alt="Quill Logo" class="logo">
+        </div>
+        <div class="loading-bar"></div>
+    </div>
+
+    <script>
+        // Wait for the animation to complete before redirecting
+        setTimeout(function() {
+            // Add fade out animation
+            document.querySelector('.splash-container').style.animation = 'fadeOut 0.5s ease forwards';
+            
+            // Redirect after fade out
+            setTimeout(function() {
+                window.location.href = 'splash.html';
+            }, 500);
+        }, 3000); // Total time: 3 seconds for loading + 0.5 seconds for fade out
+    </script>
+</body>
+</html>
